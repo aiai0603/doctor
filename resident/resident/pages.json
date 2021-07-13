@@ -2,9 +2,29 @@
 	"pages": [{
 		"path": "pages/index/index",
 		"style": {
-			"navigationBarTitleText": "uni-app"
+			"navigationBarTitleText": "uni-app",
+			"app-plus": {
+				"titleNView": {
+					"titleSize": "large"
+				}
+			}
 		}
-	}],
+	}    ,{
+            "path" : "pages/record/record",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "配药记录",
+				"app-plus": {
+					"titleNView": {
+						"backgroundColor": "#f8f8f8",
+						"titleSize": "20px"
+					}
+				},
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
