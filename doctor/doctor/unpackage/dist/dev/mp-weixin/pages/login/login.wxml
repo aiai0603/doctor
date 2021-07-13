@@ -1,0 +1,1 @@
+<view class="main"><view class="logo"><image class="pic" src="../../static/img/hos.png" mode></image><view class="title">xxx医院</view></view><button class="but" type="default" data-event-opts="{{[['tap',[['login']]]]}}" bindtap="__e"><image class="icon" src="../../static/img/wechat.png" mode></image>微信快捷登录</button></view>
