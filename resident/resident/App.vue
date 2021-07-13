@@ -13,6 +13,11 @@
 	}
 </script>
 
-<style>
-	/*每个页面公共css */
+<style lang="scss">
+	@import "uview-ui/index.scss";
+	
+	page {
+		background: #f2f2f2;
+		height: 100%;
+	}
 </style>
