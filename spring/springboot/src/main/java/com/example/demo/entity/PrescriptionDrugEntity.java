@@ -8,7 +8,6 @@ import java.util.Objects;
 @Table(name = "prescription_drug", schema = "doctor", catalog = "")
 public class PrescriptionDrugEntity {
     private String prescriptionDrugId; /**处方药品标识*/
-    private String orgId; /**机构id*/
     private String prescriptionId; /**处方id*/
     private Integer drugId; /**药品id*/
     private String drugName; /**药品名称*/
@@ -35,16 +34,6 @@ public class PrescriptionDrugEntity {
 
     public void setPrescriptionDrugId(String prescriptionDrugId) {
         this.prescriptionDrugId = prescriptionDrugId;
-    }
-
-    @Basic
-    @Column(name = "org_id")
-    public String getOrgId() {
-        return orgId;
-    }
-
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
     }
 
     @Basic
@@ -222,11 +211,11 @@ public class PrescriptionDrugEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrescriptionDrugEntity that = (PrescriptionDrugEntity) o;
-        return Objects.equals(prescriptionDrugId, that.prescriptionDrugId) && Objects.equals(orgId, that.orgId) && Objects.equals(prescriptionId, that.prescriptionId) && Objects.equals(drugId, that.drugId) && Objects.equals(drugName, that.drugName) && Objects.equals(specification, that.specification) && Objects.equals(dose, that.dose) && Objects.equals(doseUnit, that.doseUnit) && Objects.equals(frequencyCode, that.frequencyCode) && Objects.equals(frequencyName, that.frequencyName) && Objects.equals(usageCode, that.usageCode) && Objects.equals(usageName, that.usageName) && Objects.equals(takeDays, that.takeDays) && Objects.equals(quantity, that.quantity) && Objects.equals(price, that.price) && Objects.equals(packUnit, that.packUnit) && Objects.equals(groupNumber, that.groupNumber) && Objects.equals(sortNumber, that.sortNumber) && Objects.equals(remark, that.remark);
+        return Objects.equals(prescriptionDrugId, that.prescriptionDrugId) && Objects.equals(prescriptionId, that.prescriptionId) && Objects.equals(drugId, that.drugId) && Objects.equals(drugName, that.drugName) && Objects.equals(specification, that.specification) && Objects.equals(dose, that.dose) && Objects.equals(doseUnit, that.doseUnit) && Objects.equals(frequencyCode, that.frequencyCode) && Objects.equals(frequencyName, that.frequencyName) && Objects.equals(usageCode, that.usageCode) && Objects.equals(usageName, that.usageName) && Objects.equals(takeDays, that.takeDays) && Objects.equals(quantity, that.quantity) && Objects.equals(price, that.price) && Objects.equals(packUnit, that.packUnit) && Objects.equals(groupNumber, that.groupNumber) && Objects.equals(sortNumber, that.sortNumber) && Objects.equals(remark, that.remark);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(prescriptionDrugId, orgId, prescriptionId, drugId, drugName, specification, dose, doseUnit, frequencyCode, frequencyName, usageCode, usageName, takeDays, quantity, price, packUnit, groupNumber, sortNumber, remark);
+        return Objects.hash(prescriptionDrugId, prescriptionId, drugId, drugName, specification, dose, doseUnit, frequencyCode, frequencyName, usageCode, usageName, takeDays, quantity, price, packUnit, groupNumber, sortNumber, remark);
     }
 }

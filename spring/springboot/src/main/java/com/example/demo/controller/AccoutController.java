@@ -5,7 +5,7 @@ import com.example.demo.result.ExceptionMsg;
 import com.example.demo.result.Response;
 import com.example.demo.result.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +21,7 @@ public class AccoutController {
    @Autowired
    private AccoutMapper accoutMapper;
 
-   @GetMapping("login")
+   @PostMapping ("login")
    public ResponseData loginByopen(String open){
       open ="12345678911";
       if(accoutMapper.findByOpen(open)!=null){
