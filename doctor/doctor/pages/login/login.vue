@@ -26,7 +26,7 @@
 					provider: 'weixin',
 					success: function(loginRes) {
 						console.log(loginRes.authResult);
-						uni.redirectTo({
+						uni.reLaunch({
 							url:'../index/index'
 						})
 					}
@@ -81,6 +81,21 @@
 		height: 80rpx;
 		box-shadow: #666666 3rpx 3rpx 10rpx;
 
+	}
+	
+	.but:active {
+		width: 80%;
+		display: flex;
+		flex-flow: row;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		background-color: #05aa05;
+		border-radius: 50rpx;
+		font-size: 30rpx;
+		height: 80rpx;
+		box-shadow: #666666 3rpx 3rpx 5rpx;
+	
 	}
 
 	.icon {
