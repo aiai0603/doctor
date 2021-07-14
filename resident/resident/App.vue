@@ -17,7 +17,6 @@
 	@import "uview-ui/index.scss";
 	
 	page {
-		background: #f2f2f2;
 		height: 100%;
 	}
 </style>
