@@ -8,14 +8,15 @@
 			:style="{height:swiperheight}" class="swiperss">
 			<swiper-item class="swiper-item" v-for="(item, index) in list" :key="index">
 				<scroll-view scroll-y @scrolltolower="onreachBottom" class="list" :style="{height:swiperheight}">
-					<view class="list" >
-						<view v-for="(item2,index2) in medicalList" class="card" @click="goto(item2.consultStatus,item2.consultId)">
+					<view class="list">
+						<view v-for="(item2,index2) in medicalList" class="card"
+							@click="goto(item2.consultStatus,item2.consultId)">
 							<view class="up">
 								<view class="date">
-									申请时间：{{item2.createTime}}
+									申请时间：{{time(item2.createTime)}}
 								</view>
 								<view class="status">
-									{{item2.consultStatus==1?'待完成':'已完成'}}
+									{{item2.consultStatus==2?'待完成':'已完成'}}
 								</view>
 							</view>
 							<view class="mid">
@@ -34,7 +35,7 @@
 							</view>
 							<view class="down">
 								<view class="but">
-										{{item2.consultStatus==1?'完成接诊':'查看处方'}}
+									{{item2.consultStatus==2?'完成接诊':'查看处方'}}
 								</view>
 							</view>
 						</view>
@@ -54,84 +55,7 @@
 
 		data() {
 			return {
-				dlist: [[{
-					consultId:0,
-					consultStatus: 1,
-					personName: "张伟",
-					personGenderCode: 2,
-					personGenderName: "男",
-					drugNames: "测试药剂1,测试药剂2,测试药剂3",
-					personAge: 54,
-					createTime: "2020-01-23 12:21:00"
 
-
-				}, {
-consultId:1,
-					consultStatus: 1,
-					personName: "张伟",
-					personGenderCode: 2,
-					personGenderName: "男",
-					drugNames: "测试药剂1,测试药剂2,测试药剂3",
-					personAge: 54,
-					createTime: "2020-01-23 12:21:00"
-
-
-				},{
-consultId:2,
-					consultStatus: 1,
-					personName: "张伟",
-					personGenderCode: 2,
-					personGenderName: "男",
-					drugNames: "测试药剂1,测试药剂2,测试药剂3",
-					personAge: 54,
-					createTime: "2020-01-23 12:21:00"
-
-
-				}, {
-consultId:3,
-					consultStatus: 1,
-					personName: "张伟",
-					personGenderCode: 2,
-					personGenderName: "男",
-					drugNames: "测试药剂1,测试药剂2,测试药剂3",
-					personAge: 54,
-					createTime: "2020-01-23 12:21:00"
-
-
-				},{
-consultId:4,
-					consultStatus: 1,
-					personName: "张伟",
-					personGenderCode: 2,
-					personGenderName: "男",
-					drugNames: "测试药剂1,测试药剂2,测试药剂3",
-					personAge: 54,
-					createTime: "2020-01-23 12:21:00"
-
-
-				}, {
-consultId:5,
-					consultStatus: 1,
-					personName: "张伟",
-					personGenderCode: 2,
-					personGenderName: "男",
-					drugNames: "测试药剂1,测试药剂2,测试药剂3",
-					personAge: 54,
-					createTime: "2020-01-23 12:21:00"
-
-
-				}],[{
-consultId:6,
-					consultStatus: 2,
-					personName: "张伟",
-					personGenderCode: 2,
-					personGenderName: "男",
-					drugNames: "测试药剂1,测试药剂2,测试药剂3",
-					personAge: 54,
-					createTime: "2020-01-23 12:21:00"
-
-
-				}]],
 				list: [{
 					name: '待完成'
 				}, {
@@ -139,19 +63,53 @@ consultId:6,
 				}],
 				medicalList: [],
 				swiperCurrent: 0,
+				start: 1,
 				swiperheight: 200,
 			}
 		},
 		onReady() {
 			//swiper高度自适应
-			this.getElementHeight('.swiperss'),
-			this.getData(0)
+			this.getElementHeight('.swiperss');
+
+		},
+		onLoad() {
+			this.getData(0);
+		},
+		computed: {
+
+			time() {
+
+				return function(cellval) {
+
+					return this.format(cellval);
+
+
+				}
+			}
+
 		},
 
 
 		methods: {
+
+			add0(m) {
+				return m < 10 ? '0' + m : m
+			},
+			format(shijianchuo) {
+				var time = new Date(shijianchuo);
+				var y = time.getFullYear();
+				var m = time.getMonth() + 1;
+				var d = time.getDate();
+				var h = time.getHours();
+				var mm = time.getMinutes();
+				var s = time.getSeconds();
+				return y + '-' + this.add0(m) + '-' + this.add0(d) + ' ' + this.add0(h) + ':' + this.add0(mm) + ':' + this
+					.add0(s);
+			},
+
+
 			getElementHeight(element) {
-				setTimeout(() => {
+				
 					let query = uni.createSelectorQuery().in(this);
 					query.select(element).boundingClientRect();
 					query.exec((res) => {
@@ -168,16 +126,19 @@ consultId:6,
 
 						}
 					})
-				}, 20)
+				
 			},
-			goto(e,id){
+			goto(e, id) {
 				uni.navigateTo({
-					url:"../person/person?type="+e+"&id="+id
+					url: "../person/person?id=" + id
 				})
 			},
 			changeIndex(index) {
 				this.swiperCurrent = index;
-				this.getData(index)
+				this.medicalList = [];
+				this.start = 1;
+				this.getData(index);
+				
 			},
 			transition(e) {
 				let dx = e.detail.dx;
@@ -188,17 +149,51 @@ consultId:6,
 			animationfinish(e) {
 				let current = e.detail.current;
 				this.$refs.uTabs.setFinishCurrent(current);
-				this.swiperCurrent = current;
-
-				this.getData(this.swiperCurrent)
+				if(this.swiperCurrent == current)
+				{
+					
+				}else{
+					this.swiperCurrent = current;
+					this.medicalList = [];
+					this.start = 1;
+					
+					this.getData(this.swiperCurrent)
+				}
+				
+				
 			},
 
 
 			getData(e) {
-				this.medicalList = this.dlist[e]
+				uni.request({
+					url: 'http://192.168.43.70:8080/consult/findAll', //仅为示例，并非真实接口地址。
+					data: {
+						start: this.start,
+						type: e + 2,
+						doctorId: 1
+					},
+					success: (res) => {
+						if (res.data.rspCode == 201)
+						{
+							this.medicalList = this.medicalList.concat(res.data.data.list);
+						}
+						else
+						{
+							uni.showToast({
+								title: res.data.rspMsg,
+								duration: 2000
+							});
+
+						}
+
+					}
+				});
 			},
 
 			onreachBottom() {
+
+				this.start++;
+				this.getData(this.swiperCurrent);
 
 			}
 		}
@@ -295,6 +290,15 @@ consultId:6,
 	.status {
 		font-size: 30rpx;
 		color: #ffc48a;
+	}
+
+	.card:active {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #F7f7f7;
+		box-shadow: #cccccc 1rpx 1rpx 5rpx;
 	}
 
 	.card {

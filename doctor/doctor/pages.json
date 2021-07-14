@@ -11,6 +11,7 @@
 			"path": "pages/enter/enter",
 			"style": {
 				"navigationBarTitleText": "复诊配药——医生端",
+				"enablePullDownRefresh": true,
 				 "app-plus": {"titleNView": false} 
 				
 			}
@@ -22,7 +23,8 @@
 			
 				"navigationBarTitleText": "复诊配药",
 				"navigationBarBackgroundColor":"#1ab394",
-				"navigationBarTextStyle":"white"
+				"navigationBarTextStyle":"white",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -31,8 +33,30 @@
 			
 				"navigationBarTitleText": "患者详情",
 				"navigationBarBackgroundColor":"#098ade",
-				"navigationBarTextStyle":"white"
+				"navigationBarTextStyle":"white",
+				"enablePullDownRefresh": true
 			}
+		},
+		{
+			"path": "pages/prescription/prescription",
+			"style": {
+				"navigationBarTitleText": "处方",
+				"navigationBarBackgroundColor":"#098ade",
+				"navigationBarTextStyle":"white",
+				"enablePullDownRefresh": true
+				
+			}
+		},
+		{
+			"path": "pages/med/med",
+			"style": {
+				"navigationBarTitleText": "新增药品",
+				"navigationBarBackgroundColor":"#098ade",
+				"navigationBarTextStyle":"white",
+				"enablePullDownRefresh": true
+				
+			}
+			
 		},
 		{
 			"path": "pages/login/login",
@@ -43,7 +67,16 @@
 
 		}
 
-	],
+	    ,{
+            "path" : "pages/med/med",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
