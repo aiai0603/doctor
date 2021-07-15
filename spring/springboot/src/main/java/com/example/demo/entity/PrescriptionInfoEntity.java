@@ -8,7 +8,6 @@ import java.util.Objects;
 @Table(name = "prescription_info", schema = "doctor", catalog = "")
 public class PrescriptionInfoEntity {
     private String prescriptionId; /**处方id*/
-    private String orgId; /**机构id*/
     private String userId; /**患者id*/
     private String consultId; /**问诊id*/
     private String prescriptionType; /**处方类型，1西药，2中成药，3中草药*/
@@ -25,16 +24,6 @@ public class PrescriptionInfoEntity {
 
     public void setPrescriptionId(String prescriptionId) {
         this.prescriptionId = prescriptionId;
-    }
-
-    @Basic
-    @Column(name = "org_id")
-    public String getOrgId() {
-        return orgId;
-    }
-
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
     }
 
     @Basic
@@ -112,11 +101,11 @@ public class PrescriptionInfoEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrescriptionInfoEntity that = (PrescriptionInfoEntity) o;
-        return Objects.equals(prescriptionId, that.prescriptionId) && Objects.equals(orgId, that.orgId) && Objects.equals(userId, that.userId) && Objects.equals(consultId, that.consultId) && Objects.equals(prescriptionType, that.prescriptionType) && Objects.equals(doctorId, that.doctorId) && Objects.equals(doctorName, that.doctorName) && Objects.equals(createTime, that.createTime) && Objects.equals(prescriptionStatus, that.prescriptionStatus);
+        return Objects.equals(prescriptionId, that.prescriptionId) && Objects.equals(userId, that.userId) && Objects.equals(consultId, that.consultId) && Objects.equals(prescriptionType, that.prescriptionType) && Objects.equals(doctorId, that.doctorId) && Objects.equals(doctorName, that.doctorName) && Objects.equals(createTime, that.createTime) && Objects.equals(prescriptionStatus, that.prescriptionStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(prescriptionId, orgId, userId, consultId, prescriptionType, doctorId, doctorName, createTime, prescriptionStatus);
+        return Objects.hash(prescriptionId, userId, consultId, prescriptionType, doctorId, doctorName, createTime, prescriptionStatus);
     }
 }
