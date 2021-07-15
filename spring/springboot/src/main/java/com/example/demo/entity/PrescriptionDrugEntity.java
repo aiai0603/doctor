@@ -7,42 +7,42 @@ import java.util.Objects;
 @Entity
 @Table(name = "prescription_drug", schema = "doctor", catalog = "")
 public class PrescriptionDrugEntity {
-    private String prescriptionDrugId; /**处方药品标识*/
-    private String prescriptionId; /**处方id*/
-    private Integer drugId; /**药品id*/
-    private String drugName; /**药品名称*/
-    private String specification; /**药品规格*/
-    private BigDecimal dose; /**一次剂量*/
-    private String doseUnit; /**剂量单位*/
-    private Integer frequencyCode; /**用药频次代码*/
-    private String frequencyName; /**用药频次*/
-    private Integer usageCode; /**药品用法代码*/
-    private String usageName; /**药品用法*/
-    private Integer takeDays; /**用药天数*/
-    private BigDecimal quantity; /**药品数量*/
-    private BigDecimal price; /**单价*/
-    private String packUnit; /**包装单位*/
-    private Integer groupNumber; /**组号*/
-    private Integer sortNumber; /**顺序号*/
-    private String remark;  /**嘱托*/
+    private int prescriptionDrugId;
+    private int prescriptionId;
+    private int drugId;
+    private String drugName;
+    private String specification;
+    private BigDecimal dose;
+    private String doseUnit;
+    private Integer frequencyCode;
+    private String frequencyName;
+    private Integer usageCode;
+    private String usageName;
+    private Integer takeDays;
+    private BigDecimal quantity;
+    private BigDecimal price;
+    private String packUnit;
+    private Integer groupNumber;
+    private Integer sortNumber;
+    private String remark;
 
     @Id
     @Column(name = "prescription_drug_id")
-    public String getPrescriptionDrugId() {
+    public int getPrescriptionDrugId() {
         return prescriptionDrugId;
     }
 
-    public void setPrescriptionDrugId(String prescriptionDrugId) {
+    public void setPrescriptionDrugId(int prescriptionDrugId) {
         this.prescriptionDrugId = prescriptionDrugId;
     }
 
     @Basic
     @Column(name = "prescription_id")
-    public String getPrescriptionId() {
+    public int getPrescriptionId() {
         return prescriptionId;
     }
 
-    public void setPrescriptionId(String prescriptionId) {
+    public void setPrescriptionId(int prescriptionId) {
         this.prescriptionId = prescriptionId;
     }
 
@@ -211,11 +211,11 @@ public class PrescriptionDrugEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrescriptionDrugEntity that = (PrescriptionDrugEntity) o;
-        return Objects.equals(prescriptionDrugId, that.prescriptionDrugId) && Objects.equals(prescriptionId, that.prescriptionId) && Objects.equals(drugId, that.drugId) && Objects.equals(drugName, that.drugName) && Objects.equals(specification, that.specification) && Objects.equals(dose, that.dose) && Objects.equals(doseUnit, that.doseUnit) && Objects.equals(frequencyCode, that.frequencyCode) && Objects.equals(frequencyName, that.frequencyName) && Objects.equals(usageCode, that.usageCode) && Objects.equals(usageName, that.usageName) && Objects.equals(takeDays, that.takeDays) && Objects.equals(quantity, that.quantity) && Objects.equals(price, that.price) && Objects.equals(packUnit, that.packUnit) && Objects.equals(groupNumber, that.groupNumber) && Objects.equals(sortNumber, that.sortNumber) && Objects.equals(remark, that.remark);
+        return Objects.equals(prescriptionDrugId, that.prescriptionDrugId)&& Objects.equals(prescriptionId, that.prescriptionId) && Objects.equals(drugId, that.drugId) && Objects.equals(drugName, that.drugName) && Objects.equals(specification, that.specification) && Objects.equals(dose, that.dose) && Objects.equals(doseUnit, that.doseUnit) && Objects.equals(frequencyCode, that.frequencyCode) && Objects.equals(frequencyName, that.frequencyName) && Objects.equals(usageCode, that.usageCode) && Objects.equals(usageName, that.usageName) && Objects.equals(takeDays, that.takeDays) && Objects.equals(quantity, that.quantity) && Objects.equals(price, that.price) && Objects.equals(packUnit, that.packUnit) && Objects.equals(groupNumber, that.groupNumber) && Objects.equals(sortNumber, that.sortNumber) && Objects.equals(remark, that.remark);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(prescriptionDrugId, prescriptionId, drugId, drugName, specification, dose, doseUnit, frequencyCode, frequencyName, usageCode, usageName, takeDays, quantity, price, packUnit, groupNumber, sortNumber, remark);
+        return Objects.hash(prescriptionDrugId,prescriptionId, drugId, drugName, specification, dose, doseUnit, frequencyCode, frequencyName, usageCode, usageName, takeDays, quantity, price, packUnit, groupNumber, sortNumber, remark);
     }
 }

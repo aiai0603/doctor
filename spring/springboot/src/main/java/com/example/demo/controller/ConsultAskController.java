@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 
 import com.example.demo.entity.ConsultAskEntity;
+import com.example.demo.entity.PrescriptionInfoEntity;
 import com.example.demo.mapper.ConsultAskMapper;
+import com.example.demo.mapper.PrecriptionMapper;
 import com.example.demo.repository.ConsultAskRepository;
 import com.example.demo.result.ExceptionMsg;
 import com.example.demo.result.Response;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +36,9 @@ public class ConsultAskController {
     ConsultAskMapper consultAskMapper;
     @Autowired
     ConsultAskRepository consultAskRepository;
+    @Autowired
+    PrecriptionMapper precriptionMapper;
+
     @GetMapping("findAll")
     public ResponseData findAll(@RequestParam("type") Integer type,@RequestParam("doctorId") String doctorId,@RequestParam(value = "start", defaultValue = "0") Integer start){
         PageHelper.startPage(start,4,"create_time asc");
@@ -48,7 +54,10 @@ public class ConsultAskController {
     }
 
     @GetMapping("findById")
-    public ResponseData findById(@RequestParam("consult") String consult ){
+    public ResponseData findById(@RequestParam(value = "consult",defaultValue = "") Integer consult ){
+        if(consult == null){
+            return new ResponseData(ExceptionMsg.FAILED,"查找条件为空");
+        }
         return new ResponseData(ExceptionMsg.SUCCESS,consultAskMapper.findByConsult(consult));
     }
 
@@ -56,10 +65,10 @@ public class ConsultAskController {
     public ResponseData addConsult(@RequestBody Map<String,Object> map1){
       ConsultAskEntity consult = new ConsultAskEntity();
       consult.setDeptName((String)map1.get("deptName"));
-      consult.setDoctorId((String)map1.get("doctorId"));
+      consult.setDoctorId(Integer.parseInt((String) map1.get("doctorId")));
       consult.setDoctorName((String)map1.get("doctorName"));
       consult.setDoctorLevelName((String)map1.get("levelName"));
-      consult.setCreateUserId((String)map1.get("userId"));
+      consult.setCreateUserId((Integer)map1.get("userId"));
       consult.setPersonName((String)map1.get("personName"));
       consult.setPersonCardType((String) map1.get("cardType"));
       consult.setPersonCardId((String)map1.get("cardId"));
@@ -78,5 +87,25 @@ public class ConsultAskController {
       consult.setFinishTime(null);
       consultAskRepository.save(consult);
       return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
+    }
+
+    @PostMapping("finish")
+    public ResponseData finishConsult(@RequestBody Map<String,Object> map1){
+        Date time = new Date();
+        int consult = Integer.parseInt((String) map1.get("consultId"));
+        try{
+            List<PrescriptionInfoEntity> list  =  precriptionMapper.findByConsultStatus(consult,"1");
+            if(list.size()!=0){
+                consultAskMapper.finishConsult(new Timestamp(time.getTime()),consult);
+                return new ResponseData(ExceptionMsg.SUCCESS,"完成接诊");
+            }
+            else{
+                return new ResponseData(ExceptionMsg.FAILED,"请先提交药方");
+            }
+        }catch (Exception e){
+            throw e;
+           // return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+
     }
 }
