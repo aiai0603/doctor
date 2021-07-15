@@ -51,11 +51,16 @@
 </template>
 
 <script>
+	import {
+		request,
+		showToast
+	} from "../../static/js/request.js"
 	export default {
 
 		data() {
 			return {
 
+				did: 0,
 				list: [{
 					name: '待完成'
 				}, {
@@ -73,7 +78,17 @@
 
 		},
 		onLoad() {
-			this.getData(0);
+
+			if (uni.getStorageSync('doctorId') != undefined && uni.getStorageSync('doctorId') != '') {
+
+
+
+
+				this.getData();
+			}
+
+
+
 		},
 		computed: {
 
@@ -109,24 +124,24 @@
 
 
 			getElementHeight(element) {
-				
-					let query = uni.createSelectorQuery().in(this);
-					query.select(element).boundingClientRect();
-					query.exec((res) => {
-						if (!res) { //如果没获取到，再调一次
-							this.getElementHeight();
-						} else {
-							var that = this;
-							uni.getSystemInfo({
-								success: (resu) => { // resu 可以获取当前屏幕的高度
-									that.swiperheight = (resu.windowHeight - res[0].top) +
-										'px';
-								},
-							})
 
-						}
-					})
-				
+				let query = uni.createSelectorQuery().in(this);
+				query.select(element).boundingClientRect();
+				query.exec((res) => {
+					if (!res) { //如果没获取到，再调一次
+						this.getElementHeight();
+					} else {
+						var that = this;
+						uni.getSystemInfo({
+							success: (resu) => { // resu 可以获取当前屏幕的高度
+								that.swiperheight = (resu.windowHeight - res[0].top) +
+									'px';
+							},
+						})
+
+					}
+				})
+
 			},
 			goto(e, id) {
 				uni.navigateTo({
@@ -138,7 +153,7 @@
 				this.medicalList = [];
 				this.start = 1;
 				this.getData(index);
-				
+
 			},
 			transition(e) {
 				let dx = e.detail.dx;
@@ -149,44 +164,40 @@
 			animationfinish(e) {
 				let current = e.detail.current;
 				this.$refs.uTabs.setFinishCurrent(current);
-				if(this.swiperCurrent == current)
-				{
-					
-				}else{
+				if (this.swiperCurrent == current) {
+
+				} else {
 					this.swiperCurrent = current;
 					this.medicalList = [];
 					this.start = 1;
-					
+
 					this.getData(this.swiperCurrent)
 				}
-				
-				
+
+
 			},
 
 
-			getData(e) {
-				uni.request({
-					url: 'http://192.168.43.70:8080/consult/findAll', //仅为示例，并非真实接口地址。
+			getData() {
+				request({
+					url: '/consult/findAll', //仅为示例，并非真实接口地址。
 					data: {
 						start: this.start,
-						type: e + 2,
-						doctorId: 1
+						type: this.swiperCurrent + 2,
+						doctorId: uni.getStorageSync('doctorId')
 					},
-					success: (res) => {
-						if (res.data.rspCode == 201)
-						{
-							this.medicalList = this.medicalList.concat(res.data.data.list);
-						}
-						else
-						{
-							uni.showToast({
-								title: res.data.rspMsg,
-								duration: 2000
-							});
-
-						}
+				}).then(res => {
+					if (res.data.rspCode == 201) {
+						this.medicalList = this.medicalList.concat(res.data.data.list);
+					} else {
+						uni.showToast({
+							icon: 'none',
+							title: res.data.data ? res.data.data : '网络异常',
+							duration: 2000
+						});
 
 					}
+
 				});
 			},
 

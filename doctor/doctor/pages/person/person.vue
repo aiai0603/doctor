@@ -80,7 +80,7 @@
 						<view v-for="(item,index) in med(item2.photoIds)">
 
 							<image class="logo" :src="'/static/'+item" @click="clickImg(item)"></image>
-							
+
 						</view>
 					</view>
 
@@ -112,10 +112,15 @@
 </template>
 
 <script>
+	import {
+		request,
+		showToast
+	} from "../../static/js/request.js"
 	export default {
 		data() {
 			return {
 				show: false,
+				cid: 0,
 				content: "您确定完成接诊吗？完成后不得再次进行修改",
 				item2: {},
 				cid: 0,
@@ -124,7 +129,7 @@
 		},
 		computed: {
 
-			
+
 
 			time() {
 
@@ -136,23 +141,26 @@
 				}
 			},
 
-		
+
 
 
 		},
 
 		onLoad(option) {
-			this.getData(option.id);
+			this.cid = option.id;
+			this.getData();
 		},
 		methods: {
 			med(e) {
-				if(e!=null)
+				if (e != null)
 					return e.split(',')
 			},
 			add0(m) {
 				return m < 10 ? '0' + m : m
 			},
 			format(shijianchuo) {
+				if (!shijianchuo)
+					return null;
 				var time = new Date(shijianchuo);
 				var y = time.getFullYear();
 				var m = time.getMonth() + 1;
@@ -164,30 +172,32 @@
 					.add0(s);
 			},
 
-			getData(id) {
+			getData() {
 
 
-				uni.request({
-					url: 'http://192.168.43.70:8080/consult/findById', //仅为示例，并非真实接口地址。
+				request({
+					url: '/consult/findById', //仅为示例，并非真实接口地址。
 					data: {
-						consult: id
-					},
-					success: (res) => {
-						if (res.data.rspCode == 200) {
+						consult: this.cid
+					}
+				}).
+				then(res => {
+					if (res.data.rspCode == 200) {
 
-							this.item2 = res.data.data;
-							console.log(this.item2)
+						this.item2 = res.data.data;
 
-						} else {
-							uni.showToast({
-								title: res.data.rspMsg,
-								duration: 2000
-							});
 
-						}
+					} else {
+						uni.showToast({
+							icon: 'none',
+							title: res.data.data ? res.data.data : '网络异常',
+							duration: 2000
+						});
 
 					}
-				});
+
+				})
+
 			},
 			pres() {
 				uni.navigateTo({
@@ -199,9 +209,30 @@
 				this.show = true;
 			},
 			quit() {
-				uni.navigateBack({
-					delta: 1
-				});
+				request({
+					method: "POST",
+					url: '/consult/finish', //仅为示例，并非真实接口地址。
+					data: {
+						consultId: this.cid
+					}
+				}).
+				then(res => {
+
+					if (res.data.rspCode == 200) {
+						uni.navigateBack({
+							delta: 1
+						});
+					} else {
+						uni.showToast({
+							icon: 'none',
+							title: res.data.data ? res.data.data : '网络异常',
+							duration: 2000
+						});
+
+					}
+
+				})
+
 			},
 			clickImg(item) {
 				var url = '/static/' + item
