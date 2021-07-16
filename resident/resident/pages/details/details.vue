@@ -11,28 +11,29 @@
 		<!--表单-->
 		<u-form :model="form" ref="uForm" label-width="200" :label-style="labelStyle">
 			<view class="doctor" :style="{ height: form.doctorId ? '200rpx': ''}">
-				<u-form-item label="诊断医生" prop="doctor" :required="true" :border-bottom="false" v-if="!form.doctorId" style="width: 100%;">
+				<u-form-item label="诊断医生" prop="doctor" :required="true" :border-bottom="false" v-if="!form.doctor.name" style="width: 100%;">
 					<u-section 
 					    title="" 
 						sub-title="选择医生" 
 						:showLine="false"
 						slot="right"
-						style="margin-right: 30rpx;"></u-section>
+						style="margin-right: 30rpx;"
+						@click="chooseDoc()"></u-section>
 			    </u-form-item>
 				<view class="doctor-info" v-else>
-					<view style="display: flex;">
-						<u-avatar size="150"></u-avatar>
+					<view style="display: flex; flex-direction: row;">
+						<u-avatar size="150" :src="form.doctor.avatar"></u-avatar>
 						<view style="margin-left: 20rpx; height: 120rpx;">
-							<view style="display: flex; margin-top: 10rpx;">
-								<span style="font-weight: 700; font-size: 38rpx;">方红全</span>
-								<u-tag type="warning" text="主任医师" shape="circle" style="margin-left: 15rpx;"></u-tag>
+							<view style="display: flex; margin-top: 10rpx; flex-direction: row;">
+								<span style="font-weight: 700; font-size: 38rpx;">{{ form.doctor.name }}</span>
+								<u-tag type="warning" :text="form.doctor.level" shape="circle" class="tag"></u-tag>
 							</view>
-							<view style="margin-top: 30rpx;">呼吸内科</view>
+							<view style="margin-top: 30rpx;">{{ form.doctor.dept }}</view>
 						</view>
 					</view>
 					<view style="color: #ccc; float: right;">
 						更换医生
-						<u-icon name="arrow-right"></u-icon>
+						<u-icon name="arrow-right" @click="chooseDoc()"></u-icon>
 					</view>
 				</view>
 			</view>
@@ -47,31 +48,31 @@
 				<view v-else style="margin-right: 30rpx; color: #000;" slot="right" @click="showInfo = true;">{{ form.patientInfo.name }}&nbsp;{{ form.patientInfo.sex }}&nbsp;{{ form.patientInfo.age }}</view>
 			</u-form-item>
 			<u-form-item label="确诊诊断" prop="diagnosis" :required="true">
-				<view style="margin-right: 30rpx;" slot="right" v-if="!form.diagnosis">
+				<view style="margin-right: 30rpx;" slot="right" v-if="!form.diagnosis" @click="chooseDi()">
 					选择诊断
 					<u-icon name="arrow-right"></u-icon>
 				</view>
-				<view v-else style="margin-right: 30rpx; color: #000;" slot="right">霍乱</view>
+				<view v-else style="margin-right: 30rpx; color: #000;" slot="right" @click="chooseDi()">{{ form.diagnosis }}</view>
 			</u-form-item>
 			<u-form-item label="所需药品" prop="drug" :border-bottom="false" :required="true">
-				<view style="margin-right: 30rpx;" slot="right">
+				<view style="margin-right: 30rpx;" slot="right" @click="addMedicine()">
 					添加药品
 					<u-icon name="arrow-right"></u-icon>
 				</view>
 			</u-form-item>
-			<view v-if="form.drug.length != 0" class="drug">
-				<block v-for="item in form.drug">
-					<u-tag type="success" :text="item" style="margin: 20rpx 25rpx;" :closeable="true"></u-tag>
+			<view v-if="form.drugList.length != 0" class="drug">
+				<block v-for="(item, index) in form.drugList">
+					<u-tag type="success" :text="item" style="margin: 20rpx 25rpx;" :closeable="true" @close="delTag(index)"></u-tag>
 				</block>
 			</view>
 			
 			<u-gap height="20" bg-color="#f2f2f2"></u-gap>
 			
-			<view style="display: flex; align-items: center; width: 100%;">
+			<view style="display: flex; align-items: center; width: 100%; flex-direction: row;">
 				<view class="title-item"></view>
 				<u-form-item label="病情描述" prop="describe" style="width: 100%;" :required="true"></u-form-item>
 			</view>
-			<view style="width: 100%; display: flex; justify-content: center;">
+			<view style="width: 100%; display: flex; justify-content: center; flex-direction: row;">
 				<view style="width: 90%;">
 					<u-input type="textarea" :autoHeight="true" v-model="form.value" placeholder="请准确描述病情,以便医生更好判断(不少于5个字)"></u-input>
 				</view>
@@ -79,13 +80,13 @@
 			
 			<u-gap height="20" bg-color="#f2f2f2"></u-gap>
 			
-			<view style="display: flex; align-items: center; width: 100%;">
+			<view style="display: flex; align-items: center; width: 100%; flex-direction: row;">
 				<view class="title-item"></view>
 				<u-form-item label="病情照片" prop="photo" style="width: 100%" ></u-form-item>
 			</view>
 			<view style="width: 100%; display: flex; align-items: center; margin-top: 30rpx; flex-direction: column;">
 				<view style="width: 90%;">
-					<u-upload :auto-upload="false"></u-upload>
+					<u-upload ref="uUpload" :auto-upload="false" :action="action"></u-upload>
 				</view>
 				<view style="width: 85%; margin-top: 60rpx; color: #ccc; margin-bottom: 80rpx;">
 					<text space="emsp">
@@ -95,7 +96,7 @@
 			</view>
 		</u-form>
 		
-		<u-button type="success" style="height: 100rpx;">提交</u-button>
+		<u-button type="success" style="height: 100rpx;" @click="submit()">提交</u-button>
 		
 		<!--信息弹出层-->
 		<u-popup v-model="showInfo" mode="center" width="90%" height="55%" border-radius="20" :closeable="true">
@@ -143,7 +144,12 @@
 					marginLeft: '40rpx'
 				},
 				form: {
-					doctorId: '0',
+					doctor: {
+						avatar: '',
+						name: '',
+						level: '',
+						dept: ''
+					},
 					patientInfo: {
 						name: '',
 						id: '',
@@ -152,8 +158,8 @@
 						birthday: '',
 						phone: ''
 					},
-					diagnosis: '霍乱',
-					drug: ["甘草"],
+					diagnosis: '',
+					drugList: [],
 					value: ''
 				},
 				popupform: {
@@ -165,7 +171,8 @@
 					phone: ''
 				},
 				text: '  请上传病情照片、化验单、检查资料、报告单、药品处方单,若为皮肤问题,建议对准患处拍摄。照片仅自己和医生可见',
-				selectorSex: ['男', '女']
+				selectorSex: ['男', '女'],
+				action: 'http://47.97.158.11:8088/consult/addPhoto'
 			}
 		},
 		methods: {
@@ -181,7 +188,6 @@
 				var IdReg =/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/;
                 var PhoneReg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
 				
-				console.log(this.popupform)
 				if(!NameReg.test(this.popupform.name)) {
 					uni.showToast({
 						icon: 'none',
@@ -217,6 +223,33 @@
 					this.showInfo = false
 				}
 			},
+			addMedicine () {
+				uni.navigateTo({
+					url: '../medicine/medicine'
+				})
+			},
+			chooseDoc () {
+				uni.navigateTo({
+					url: '../doctorList/doctorList'
+				})
+			},
+			chooseDi () {
+				uni.navigateTo({
+					url: '../diagnosis/diagnosis'
+				})
+			},
+			delTag (index) {
+				this.form.drugList.splice(index, 1)
+			},
+			submit () {
+				let files = [];
+				console.log(this.$refs.uUpload.lists)
+				files = this.$refs.uUpload.lists.filter(val => {
+					return val.progress == 100;
+				})
+				this.$refs.uUpload.upload();
+				console.log(files)
+			}
 		},
 	}
 </script>
@@ -224,6 +257,7 @@
 <style>
 	.doctor {
 		display: flex;
+		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 		width: 100%;
@@ -232,6 +266,7 @@
 	.doctor>.doctor-info {
 		position: relative;
 		display: flex;
+		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
 		height: 90%;
@@ -267,6 +302,13 @@
 	
 	.form-item {
 		margin-left: 20rpx;
+	}
+	
+	.tag {
+		margin-top: 10rpx;
+		margin-left: 15rpx; 
+		height: 45rpx;
+		width: 130rpx;
 	}
 
 	

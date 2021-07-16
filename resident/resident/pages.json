@@ -33,7 +33,25 @@
             
         }
         ,{
-            "path" : "pages/info/info",
+            "path" : "pages/medicine/medicine",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctorList/doctorList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/diagnosis/diagnosis",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",

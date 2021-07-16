@@ -16,7 +16,7 @@
 			<view class="record-detail">
 				<u-avatar size="100"></u-avatar>
 				<view class="record-detail-info">
-					<view style="display: flex; align-items: center;">
+					<view style="display: flex; align-items: center; flex-direction: row;">
 						<span>林玉娇</span>
 						<p style="margin-left: 25rpx; color: #818181;">在线云诊室</p>
 					</view>
@@ -61,6 +61,7 @@
 	
 	.record-info {
 		display: flex;
+		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
 		margin-left: 30rpx;
@@ -81,6 +82,7 @@
 	
 	.record-detail {
 		display: flex;
+		flex-direction: row;
 		align-items: center;
 		margin-left: 30rpx;
 		width: 95%;
