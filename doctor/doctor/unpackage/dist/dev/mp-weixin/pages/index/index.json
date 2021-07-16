@@ -1,6 +1,9 @@
 {
-  "navigationBarTitleText": "uni-app",
+  "navigationBarTitleText": "复诊配药",
+  "navigationBarBackgroundColor": "#1ab394",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
   "usingComponents": {
-    "uni-link": "/uni_modules/uni-link/components/uni-link/uni-link"
+    "u-tabs-swiper": "/uview-ui/components/u-tabs-swiper/u-tabs-swiper"
   }
 }

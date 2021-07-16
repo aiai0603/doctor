@@ -5,5 +5,8 @@
     "description": "选项卡，兼容APP端、微信小程序和H5",
     "keywords": [
         "选项卡"
-    ]
+    ],
+    "dependencies": {
+        "goeasy": "^2.0.13"
+    }
 }

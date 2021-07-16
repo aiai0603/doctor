@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "药品设置",
+  "navigationBarBackgroundColor": "#098ade",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "u-form": "/uview-ui/components/u-form/u-form",
+    "u-form-item": "/uview-ui/components/u-form-item/u-form-item",
+    "u-icon": "/uview-ui/components/u-icon/u-icon",
+    "u-number-box": "/uview-ui/components/u-number-box/u-number-box",
+    "u-input": "/uview-ui/components/u-input/u-input",
+    "u-select": "/uview-ui/components/u-select/u-select"
+  }
+}

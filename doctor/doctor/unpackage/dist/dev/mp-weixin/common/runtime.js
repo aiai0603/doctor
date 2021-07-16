@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"uni_modules/uni-link/components/uni-link/uni-link":1};
+/******/ 		var cssChunks = {"uview-ui/components/u-tabs-swiper/u-tabs-swiper":1,"uview-ui/components/u-modal/u-modal":1,"uview-ui/components/u-radio-group/u-radio-group":1,"uview-ui/components/u-icon/u-icon":1,"uview-ui/components/u-radio/u-radio":1,"uview-ui/components/u-search/u-search":1,"uview-ui/components/u-form-item/u-form-item":1,"uview-ui/components/u-input/u-input":1,"uview-ui/components/u-form/u-form":1,"uview-ui/components/u-number-box/u-number-box":1,"uview-ui/components/u-select/u-select":1,"uview-ui/components/u-badge/u-badge":1,"uview-ui/components/u-loading/u-loading":1,"uview-ui/components/u-popup/u-popup":1,"uview-ui/components/u-mask/u-mask":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"uni_modules/uni-link/components/uni-link/uni-link":"uni_modules/uni-link/components/uni-link/uni-link"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"uview-ui/components/u-tabs-swiper/u-tabs-swiper":"uview-ui/components/u-tabs-swiper/u-tabs-swiper","uview-ui/components/u-modal/u-modal":"uview-ui/components/u-modal/u-modal","uview-ui/components/u-radio-group/u-radio-group":"uview-ui/components/u-radio-group/u-radio-group","uview-ui/components/u-icon/u-icon":"uview-ui/components/u-icon/u-icon","uview-ui/components/u-radio/u-radio":"uview-ui/components/u-radio/u-radio","uview-ui/components/u-search/u-search":"uview-ui/components/u-search/u-search","uview-ui/components/u-form-item/u-form-item":"uview-ui/components/u-form-item/u-form-item","uview-ui/components/u-input/u-input":"uview-ui/components/u-input/u-input","uview-ui/components/u-form/u-form":"uview-ui/components/u-form/u-form","uview-ui/components/u-number-box/u-number-box":"uview-ui/components/u-number-box/u-number-box","uview-ui/components/u-select/u-select":"uview-ui/components/u-select/u-select","uview-ui/components/u-badge/u-badge":"uview-ui/components/u-badge/u-badge","uview-ui/components/u-loading/u-loading":"uview-ui/components/u-loading/u-loading","uview-ui/components/u-popup/u-popup":"uview-ui/components/u-popup/u-popup","uview-ui/components/u-mask/u-mask":"uview-ui/components/u-mask/u-mask"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

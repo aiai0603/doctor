@@ -92,6 +92,15 @@
             
         }
         
+        ,{
+            "path" : "pages/check/check",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "电子处方",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
