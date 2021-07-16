@@ -99,7 +99,7 @@
 			</view>
 		</view>
 		<view class="bot" v-else>
-			<view class="btn" style="width: 100%;">
+			<view class="btn" style="width: 100%;" @click="checkpre()">
 				查看处方
 			</view>
 		</view>
@@ -199,6 +199,15 @@
 				})
 
 			},
+			
+			checkpre() {
+				
+				uni.navigateTo({
+					url: "../check/check?id=" + this.item2.consultId
+				})
+			},
+			
+			
 			pres() {
 				uni.navigateTo({
 					url: "../prescription/prescription?id=" + this.item2.consultId

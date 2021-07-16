@@ -1,4 +1,7 @@
 {
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [{
 		"path": "pages/index/index",
 		"style": {
@@ -13,13 +16,45 @@
             "path" : "pages/record/record",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "配药记录",
-				"app-plus": {
-					"titleNView": {
-						"backgroundColor": "#f8f8f8",
-						"titleSize": "20px"
-					}
-				},
+				"navigationStyle": "custom" ,
+				"navigationBarTextStyle": "white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/details/details",
+            "style" :                                                                                    
+            {
+                "navigationStyle": "custom" ,
+                "navigationBarTextStyle": "white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/medicine/medicine",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctorList/doctorList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/diagnosis/diagnosis",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             

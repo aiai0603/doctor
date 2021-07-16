@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "新增药品",
+  "navigationBarBackgroundColor": "#098ade",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "u-search": "/uview-ui/components/u-search/u-search"
+  }
+}

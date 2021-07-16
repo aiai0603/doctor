@@ -23,6 +23,8 @@
 </template>
 
 <script>
+	
+	
 	import {
 		request,
 		showToast
@@ -101,6 +103,13 @@
 			
 
 			login() {
+				
+				uni.setStorageSync('doctorId', 1);
+				uni.reLaunch({
+					url: '../index/index'
+				})
+				
+			 
 
 				let that = this;
 				uni.login({

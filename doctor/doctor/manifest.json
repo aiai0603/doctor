@@ -16,7 +16,10 @@
             "delay" : 0
         },
         "modules" : {
-            "SQLite" : {}
+            "SQLite" : {},
+            "Push" : {},
+            "OAuth" : {},
+            "Share" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -46,7 +49,8 @@
                     "unipush" : {}
                 },
                 "share" : {},
-                "ad" : {}
+                "ad" : {},
+                "payment" : {}
             },
             "splashscreen" : {
                 "androidStyle" : "default",
@@ -56,7 +60,8 @@
                     "xxhdpi" : "static/img/3-2.png"
                 }
             }
-        }
+        },
+        "nativePlugins" : {}
     },
     /* SDK配置 */
     "quickapp" : {},
