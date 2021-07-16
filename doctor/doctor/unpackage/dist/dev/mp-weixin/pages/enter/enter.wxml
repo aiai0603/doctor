@@ -1,0 +1,1 @@
+<view class="main"><view data-event-opts="{{[['tap',[['enter']]]]}}" class="in bubble" bindtap="__e">医生进入</view></view>

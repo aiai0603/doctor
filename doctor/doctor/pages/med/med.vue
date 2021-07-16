@@ -110,6 +110,7 @@
 
 			change() {
 				this.list = [];
+				this.sum = 0;
 				this.start = 1;
 				this.getData();
 			},

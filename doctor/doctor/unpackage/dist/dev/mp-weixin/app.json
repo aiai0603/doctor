@@ -1,14 +1,23 @@
 {
-  "pages": [
-    "pages/index/index",
-    "pages/login/login"
-  ],
-  "subPackages": [],
-  "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
-  },
-  "usingComponents": {}
+    "pages": [
+        "pages/cache/cache",
+        "pages/index/index",
+        "pages/enter/enter",
+        "pages/person/person",
+        "pages/prescription/prescription",
+        "pages/med/med",
+        "pages/login/login",
+        "pages/method/method",
+        "pages/check/check"
+    ],
+    "subPackages": [],
+    "window": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "uni-app",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8"
+    },
+    "permission": {},
+    "usingComponents": {},
+    "sitemapLocation": "sitemap.json"
 }

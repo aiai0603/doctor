@@ -217,7 +217,14 @@
 
 					if (res.data.rspCode == 200) {
 
-						this.data = res.data.data;
+						this.data = res.data.data.prescription;
+							
+						this.list = [{
+							name:res.data.data.NoSubmit
+						},{
+							name:res.data.data.Submit
+						}];
+						
 
 
 					} else {
