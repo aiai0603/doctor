@@ -28,10 +28,18 @@ public class DiagnosisController {
     @Autowired
     DiagnosisMapper diagnosisMapper;
 
+    /**
+     * 返回所有的疾病信息
+     * @param start
+     * @return
+     */
     @GetMapping("queryAll")
-    public ResponseData findAll(@RequestParam(value = "start",defaultValue = "") Integer start){
-        PageHelper.startPage(start,5,"diagnosis_id asc");
-        List<BaseDiagnosisEntity> list = diagnosisMapper.findAll();
+    public ResponseData findAll(@RequestParam(value = "start",defaultValue = "") Integer start,@RequestParam(value = "condition",defaultValue = "")String search){
+        if(start==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入为空");
+        }
+        PageHelper.startPage(start,10,"diagnosis_id asc");
+        List<BaseDiagnosisEntity> list = diagnosisMapper.findByConditon(search);
         PageInfo<BaseDiagnosisEntity> page = new PageInfo<>(list);
         if(start<=page.getPages()){
             return new ResponseData(ExceptionMsg.SUCCESS,page);

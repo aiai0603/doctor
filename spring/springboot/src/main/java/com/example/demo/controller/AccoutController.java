@@ -28,6 +28,11 @@ public class AccoutController {
    @Autowired
    private DoctorMapper doctorMapper;
 
+   /**
+    * 通过openid授权登录
+    * @param openId
+    * @return
+    */
    @GetMapping("login")
    public ResponseData loginByopen(@RequestParam(value = "openId",defaultValue = "") String openId){
       if (openId==""){
@@ -44,6 +49,11 @@ public class AccoutController {
       }
    }
 
+   /**
+    * 通过phone检测登录用户是否存在，存在则将openid赋给他
+    * @param map1
+    * @return
+    */
    @PostMapping("saveOpen")
    public ResponseData saveOpen(@RequestBody Map<String,Object> map1){
       String phone = (String) map1.get("phone");

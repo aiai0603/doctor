@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.entity.BaseDrugEntity;
 import com.example.demo.entity.ConsultAskEntity;
 import com.example.demo.entity.PrescriptionDrugEntity;
 import com.example.demo.entity.PrescriptionInfoEntity;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -42,10 +42,19 @@ public class PrescriptionController {
     @Autowired
     DrugMapper drugMapper;
 
+    /**
+     * 通过状态信息和复诊配药id返回所有的处方
+     * @param status
+     * @param consult
+     * @return
+     */
     @GetMapping("showAll")
     public ResponseData showPrescription(@RequestParam("status") String status,@RequestParam("consult") Integer consult){
         List<PrescriptionInfoEntity> list1 = precriptionMapper.findByConsultStatus(consult,status);
         List precription = new ArrayList();
+        int length1 = precriptionMapper.findByConsultStatus(consult,"0").size();
+        int length2 = precriptionMapper.findByConsultStatus(consult,"1").size();
+        Map<String,Object> map = new HashMap<>();
         for (int i=0;i<list1.size();i++){
             List<PrescriptionDrugEntity> list2 = precriptionMapper.findDrugByPrescription(list1.get(i).getPrescriptionId());
             Map<String,Object> map1 = new HashMap<>();
@@ -55,12 +64,19 @@ public class PrescriptionController {
             map1.put("prescriptionDrug",list2);
             precription.add(map1);
         }
-        return new ResponseData(ExceptionMsg.SUCCESS,precription);
+        map.put("NoSubmit","待提交("+length1+")");
+        map.put("Submit","已提交("+length2+")");
+        map.put("prescription",precription);
+        return new ResponseData(ExceptionMsg.SUCCESS,map);
     }
 
+    /**
+     * 添加药方
+     * @param map1
+     * @return
+     */
     @PostMapping("addPrescription")
     public ResponseData addPrescription(@RequestBody Map<String,Object> map1){
-        //String doctorId = (String)map1.get("doctorId");
         Integer consultId = Integer.parseInt((String) map1.get("consultId"));
         String type = (String)map1.get("type");
         String info;
@@ -75,7 +91,6 @@ public class PrescriptionController {
         }
         Date time = new Date();
         ConsultAskEntity consult = consultAskMapper.findByConsult(consultId);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         PrescriptionInfoEntity prescriptionInfoEntity = new PrescriptionInfoEntity();
         prescriptionInfoEntity.setPrescriptionType(info);
         prescriptionInfoEntity.setConsultId(consultId);
@@ -88,6 +103,11 @@ public class PrescriptionController {
         return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
     }
 
+    /**
+     * 提交药方
+     * @param map1
+     * @return
+     */
     @PostMapping("submit")
     public ResponseData submitPrescription(@RequestBody Map<String,Object> map1){
          int id = (int) map1.get("prescriptionId");
@@ -98,6 +118,11 @@ public class PrescriptionController {
          return new ResponseData(ExceptionMsg.SUCCESS,"操作成功");
     }
 
+    /**
+     * 删除药方
+     * @param map1
+     * @return
+     */
     @PostMapping("deletePrescription")
     public ResponseData deletePrecription(@RequestBody Map<String,Object> map1){
         int id = (int) map1.get("prescriptionId");
@@ -108,6 +133,11 @@ public class PrescriptionController {
         return new ResponseData(ExceptionMsg.SUCCESS,"删除成功");
     }
 
+    /**
+     * 删除药方中的药品
+     * @param map1
+     * @return
+     */
     @PostMapping("deleteDrug")
     public ResponseData deleteDrug(@RequestBody Map<String,Object> map1){
         int id = (int) map1.get("prescriptionDrugId");
@@ -115,9 +145,16 @@ public class PrescriptionController {
         return new ResponseData(ExceptionMsg.SUCCESS,"删除成功");
     }
 
+    /**
+     * 向药方中添加药品
+     * @param prescriptionDrugEntity
+     * @return
+     */
     @PostMapping("addDrug")
     public ResponseData addDrug(@RequestBody PrescriptionDrugEntity prescriptionDrugEntity){
         try{
+            BaseDrugEntity drugEntity = drugMapper.findByDrugId(prescriptionDrugEntity.getDrugId());
+            prescriptionDrugEntity.setDose(drugEntity.getDose().multiply(prescriptionDrugEntity.getDose()));
             prescriptionDrugRepository.save(prescriptionDrugEntity);
             return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
         }catch(Exception e){
@@ -125,6 +162,12 @@ public class PrescriptionController {
         }
     }
 
+    /**
+     * 查看复诊配药的电子处方
+     * @param consult
+     * @param doctor
+     * @return
+     */
     @GetMapping("showPrescription")
     public ResponseData showPrecription(@RequestParam(value = "consult",defaultValue = "")Integer consult,
                                         @RequestParam(value = "doctor",defaultValue = "")Integer doctor){
@@ -148,6 +191,18 @@ public class PrescriptionController {
                     sum+=price*index;
                 }
                 map1.put("sum",sum);
+                map1.put("index","处方"+(i+1));
+                String type = "";
+                if(prescriptionInfo.get(i).getPrescriptionType().equals("1")){
+                    type = "普通西药方";
+                }
+                else if(prescriptionInfo.get(i).getPrescriptionType().equals("2")){
+                    type = "普通中成药";
+                }
+                else {
+                    type = "普通中草药";
+                }
+                map1.put("type",type);
                 list.add(map1);
             }
             return new ResponseData(ExceptionMsg.SUCCESS,list);

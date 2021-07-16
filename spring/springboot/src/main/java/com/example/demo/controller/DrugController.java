@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.BaseDrugEntity;
 import com.example.demo.mapper.DrugMapper;
+import com.example.demo.repository.DrugRepository;
 import com.example.demo.result.ExceptionMsg;
 import com.example.demo.result.Response;
 import com.example.demo.result.ResponseData;
@@ -28,36 +29,103 @@ public class DrugController {
     @Autowired
     DrugMapper drugMapper;
 
+    @Autowired
+    DrugRepository drugRepository;
+
+    /**
+     * 以分页形式通过模糊查询条件返回药品信息
+     * @param start
+     * @param search
+     * @return
+     */
     @GetMapping("queryAll")
     public ResponseData FuzzyQuery(@RequestParam(value = "start",defaultValue = "") Integer start,@RequestParam(value = "condition",defaultValue = "") String search){
-        PageHelper.startPage(start,10,"drug_id asc");
-        List<BaseDrugEntity> list = drugMapper.findByIndex(search);
-        PageInfo<BaseDrugEntity> page = new PageInfo<>(list);
-        if(start<=page.getPages()){
-            return new ResponseData(ExceptionMsg.SUCCESS,page);
+        if(start==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入为空");
         }
-        else{
-            return new ResponseData(ExceptionMsg.NOMORE,"没有更多了");
+        try{
+            PageHelper.startPage(start,10,"drug_id asc");
+            List<BaseDrugEntity> list = drugMapper.findByIndex(search);
+            PageInfo<BaseDrugEntity> page = new PageInfo<>(list);
+            if(start<=page.getPages()){
+                return new ResponseData(ExceptionMsg.SUCCESS,page);
+            }
+            else{
+                return new ResponseData(ExceptionMsg.NOMORE,"没有更多了");
+            }
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
         }
+
     }
 
+    /**
+     * 返回所有的用药频次
+     * @return
+     */
     @GetMapping("allFrequency")
     public ResponseData findAllFrequency(){
-        return new ResponseData(ExceptionMsg.SUCCESS,drugMapper.findFrequency());
+        try{
+            return new ResponseData(ExceptionMsg.SUCCESS,drugMapper.findFrequency());
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+
     }
 
+    /**
+     * 返回所有的用药方式
+     * @return
+     */
     @GetMapping("allUsage")
     public ResponseData findAllUsage(){
-        return new ResponseData(ExceptionMsg.SUCCESS,drugMapper.findUsage());
+        try{
+            return new ResponseData(ExceptionMsg.SUCCESS,drugMapper.findUsage());
+        }catch(Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
     }
 
+    /**
+     * 通过id返回单个的药品信息
+     * @param drugId
+     * @return
+     */
     @GetMapping("index")
     public ResponseData findByDrugId(@RequestParam("drugId") Integer drugId){
-        BaseDrugEntity drug = new BaseDrugEntity();
-        drug = drugMapper.findByDrugId(drugId);
-        if(drug==null){
-            return new ResponseData(ExceptionMsg.FAILED,"未查询到药品");
+        if(drugId==null){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
         }
-        return new ResponseData(ExceptionMsg.FIND,drug);
+        BaseDrugEntity drug = new BaseDrugEntity();
+        try{
+            drug = drugMapper.findByDrugId(drugId);
+            if(drug==null){
+                return new ResponseData(ExceptionMsg.FAILED,"未查询到药品");
+            }
+            return new ResponseData(ExceptionMsg.FIND,drug);
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+
     }
+
+    /**
+     * 添加药品
+     * @param baseDrugEntity
+     * @return
+     */
+    @PostMapping("addDrug")
+    public ResponseData addDrug(@RequestBody BaseDrugEntity baseDrugEntity){
+        if(baseDrugEntity==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入数据为空");
+        }
+        try {
+            drugRepository.save(baseDrugEntity);
+            return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+    }
+
+
 }
