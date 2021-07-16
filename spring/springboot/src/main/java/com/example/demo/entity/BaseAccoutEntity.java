@@ -7,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "base_accout", schema = "doctor")
 public class BaseAccoutEntity {
-    private String userId;  /** 用户id*/
+    private int userId;  /** 用户id*/
     private String userType;  /** 用户类型，1居民，2医生*/
     private String miniOpenId;  /** 微信小程序openid*/
     private String phoneNo; /**手机号码*/
@@ -15,11 +15,11 @@ public class BaseAccoutEntity {
 
     @Id
     @Column(name = "user_id")
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

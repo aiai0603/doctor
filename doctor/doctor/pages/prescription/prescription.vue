@@ -7,7 +7,7 @@
 			<view>
 				患者需要药品
 			</view>
-			<view class="drug" v-for="(item,index) in med">
+			<view class="drug" v-for="(item,index) in med(person.drugNames)">
 				{{item}}
 			</view>
 		</view>
@@ -19,7 +19,7 @@
 
 
 						<view :class=" choose==item2.prescriptionId?'cho':'' " class="list-item"
-							v-for="(item2,index2) in data">
+							v-for="(item2,index2) in data" @longtap="delpre(item2.prescriptionId)">
 							<view class="list-title" @click="cho(item2.prescriptionId)">
 								<view class="logo">
 									<image src="../../static/img/med.png" mode=""></image>
@@ -27,9 +27,9 @@
 										{{type(item2.prescriptionType)}}
 									</view>
 								</view>
-								<view class="add" @click.stop="addmed(item.prescriptionId)">+新增药品</view>
+								<view class="add" @click.stop="addmed(item2.prescriptionId)">+新增药品</view>
 							</view>
-							<view class="list-med-item" v-for="(item3,index3) in item2.drugs">
+							<view class="list-med-item" v-for="(item3,index3) in item2.prescriptionDrug">
 								<view class="med-name">
 									<view style="width: 50%;">
 										{{item3.drugName}}
@@ -78,55 +78,30 @@
 
 		</u-modal>
 
+		<u-modal v-model="showdel" @confirm="subdel()" :content="content" :show-cancel-button="true"
+			@cancel="choose = -1;showdel = false;">
+		</u-modal>
 
+		<u-modal v-model="showdrug" @confirm="deldrug()" :content="content" :show-cancel-button="true"
+			:mask-close-able="true">
+		</u-modal>
 	</view>
 
 
 </template>
 
 <script>
+	import {
+		request,
+		showToast
+	} from "../../static/js/request.js"
 	export default {
 		data() {
 			return {
-				data: [{
-					prescriptionId: 12,
-					prescriptionType: 1,
-					prescriptionStatus: 0,
-					drugs: [{
-						prescriptionDrugId: 12,
-						drugId: 8,
-						drugName: "测试药品",
-						specification: "34*0.5g",
-						frequencyCode: 1,
-						frequencyName: "bid",
-						usageCode: 2,
-						usageName: "口服",
-						quantity: 1,
-						packUnit: "盒"
-					}, {
-						prescriptionDrugId: 13,
-						drugId: 8,
-						drugName: "测试药品2",
-						specification: "34*0.5g",
-						frequencyCode: 1,
-						frequencyName: "bid",
-						usageCode: 2,
-						usageName: "口服",
-						quantity: 1,
-						packUnit: "盒"
-					}, {
-						prescriptionDrugId: 13,
-						drugId: 8,
-						drugName: "测试药品2测试药品2测试药品2",
-						specification: "34*0.5g",
-						frequencyCode: 1,
-						frequencyName: "bid",
-						usageCode: 2,
-						usageName: "口服",
-						quantity: 1,
-						packUnit: "盒"
-					}]
-				}],
+				content: "您确定删除这个药方吗？",
+				did: 0,
+				data: [],
+				prescriptionDrugId:0,
 				listme: [{
 						name: '西药',
 						disabled: false
@@ -142,8 +117,8 @@
 				],
 				// u-radio-group的v-model绑定的值如果设置为某个radio的name，就会被默认选中
 				value: '西药',
-
-
+				showdel: false,
+				showdrug: false,
 
 				show: false,
 				swiperCurrent: 0,
@@ -156,21 +131,19 @@
 				choose: -1,
 
 				person: {
-					consultId: 3,
-					question: "这个是一个非常非常非常非常非常非常非常非常非常发吃饭吃饭吃饭非常非常非常非常非常从非常非常非常非常非常非常非常非常非常长的",
-					diagnosis: "感冒",
-					consultId: 0,
-					consultStatus: 1,
-					personName: "张伟",
-					personGenderCode: 2,
-					personGenderName: "男",
-					drugNames: "测试药剂1，测试药剂2，测试药剂3，测试药剂1，测试药剂2，测试药剂3",
-					personAge: 54,
-					createTime: "2020-01-23 12:21:00",
-					photoIds: "c1.png，c2.png，logo.png"
+
 
 				}
 			}
+		},
+		onShow() {
+			this.getData();
+			this.getPrescription()
+		},
+		onLoad(option) {
+			this.did = option.id;
+			this.getData();
+			this.getPrescription()
 		},
 		onReady() {
 			//swiper高度自适应
@@ -188,23 +161,125 @@
 						return "中草药方";
 				}
 			},
-			med() {
-				return this.person.drugNames.split('，')
-			},
+
 
 		},
 
+
 		methods: {
+			med(e) {
+				if (e)
+					return e.split(',')
+			},
+
+			getPrescription() {
+				request({
+					url: '/consult/findById', //仅为示例，并非真实接口地址。
+					data: {
+						consult: this.did
+					}
+				}).
+				then(res => {
+					if (res.data.rspCode == 200) {
+
+						this.person = res.data.data;
+
+
+					} else {
+						uni.showToast({
+							icon:'none',
+							title: res.data.data?res.data.data:'网络异常',
+							duration: 2000
+						});
+
+					}
+
+				})
+			},
+
+			delpre(id) {
+				this.choose = id;
+				this.showdel = true;
+			},
+
+
+			getData() {
+
+
+				request({
+					url: '/prescription/showAll', //仅为示例，并非真实接口地址。
+					data: {
+						consult: this.did,
+						status: this.swiperCurrent
+					}
+				}).
+				then(res => {
+
+					if (res.data.rspCode == 200) {
+
+						this.data = res.data.data;
+
+
+					} else {
+						uni.showToast({
+							icon:'none',
+							title: res.data.data?res.data.data:'网络异常',
+							duration: 2000
+						});
+
+					}
+
+				})
+
+			},
 
 			cho(e) {
-				if (this.choose != e)
-					this.choose = e;
-				else {
-					this.choose = -1;
+				if (this.swiperCurrent == 0)
+
+				{
+					if (this.choose != e)
+						this.choose = e;
+					else {
+						this.choose = -1;
+					}
 				}
+
 			},
 			del(index, item) {
 
+				this.showdrug = true;
+				this.prescriptionDrugId = item.prescriptionDrugId
+
+
+
+			},
+			
+			deldrug(){
+				request({
+					method: "POST",
+					url: '/prescription/deleteDrug', //仅为示例，并非真实接口地址。
+					data: {
+						prescriptionDrugId: this.prescriptionDrugId
+					}
+				}).
+				then(res => {
+				
+					if (res.data.rspCode == 200) {
+				
+						this.getData();
+						this.choose = -1;
+				
+				
+					} else {
+						uni.showToast({
+							icon:'none',
+							title: res.data.data?res.data.data:'网络异常',
+							duration: 2000
+						});
+				
+					}
+				
+				})
 			},
 
 			radioChange(e) {
@@ -216,9 +291,9 @@
 			},
 			addmed(e) {
 				uni.navigateTo({
-					url:"../med/med?id="+e
+					url: "../med/med?id=" + e
 				})
-				
+
 			},
 
 
@@ -227,6 +302,97 @@
 			},
 
 			submit() {
+				if (this.choose != -1) {
+					request({
+						method: "POST",
+						url: '/prescription/submit', //仅为示例，并非真实接口地址。
+						data: {
+							prescriptionId: this.choose
+						}
+					}).
+					then(res => {
+
+						if (res.data.rspCode == 200) {
+
+							this.getData();
+							this.choose = -1;
+
+
+						} else {
+							uni.showToast({
+								icon:'none',
+								title: res.data.data?res.data.data:'网络异常',
+								duration: 2000
+							});
+
+						}
+
+					})
+				}
+
+
+			},
+
+
+			subdel() {
+
+
+				request({
+					method: "POST",
+					url: '/prescription/deletePrescription', //仅为示例，并非真实接口地址。
+					data: {
+						prescriptionId: this.choose
+					}
+				}).
+				then(res => {
+
+					if (res.data.rspCode == 200) {
+
+						this.getData();
+						this.choose = -1;
+
+
+					} else {
+						uni.showToast({
+							title: res.data.data,
+							duration: 2000
+						});
+						this.choose = -1;
+
+					}
+
+				})
+
+
+
+			},
+
+			quit() {
+				request({
+					method: "POST",
+					url: '/prescription/addPrescription', //仅为示例，并非真实接口地址。
+					data: {
+						consultId: this.did,
+						type: this.value
+					}
+				}).
+				then(res => {
+
+					if (res.data.rspCode == 200) {
+
+						this.getData();
+
+
+					} else {
+						uni.showToast({
+							icon:'none',
+							title: res.data.data?res.data.data:'网络异常',
+							duration: 2000
+						});
+
+					}
+
+				})
 
 			},
 			getElementHeight(element) {
@@ -271,9 +437,7 @@
 			},
 
 
-			getData(e) {
-				//this.medicalList = this.dlist[e]
-			},
+
 
 			onreachBottom() {
 
@@ -474,7 +638,7 @@
 		display: flex;
 		flex-flow: row;
 		justify-content: start;
-		line-height: 50rpx;
+		line-height: 60rpx;
 		flex-wrap: wrap;
 		align-items: center;
 		background-color: #fef4e8;

@@ -8,15 +8,15 @@
 	    },
 	"pages": [
 		{
-			"path": "pages/enter/enter",
-			"style": {
-				"navigationBarTitleText": "复诊配药——医生端",
-				"enablePullDownRefresh": true,
+		    "path" : "pages/cache/cache",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "网上医生",
+		        "enablePullDownRefresh": false,
 				 "app-plus": {"titleNView": false} 
-				
-			}
+		    }
+		    
 		},
-		
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -27,6 +27,17 @@
 				"enablePullDownRefresh": true
 			}
 		},
+		{
+			"path": "pages/enter/enter",
+			"style": {
+				"navigationBarTitleText": "复诊配药——医生端",
+				"enablePullDownRefresh": true,
+				 "app-plus": {"titleNView": false} 
+				
+			}
+		},
+		
+		
 		{
 			"path": "pages/person/person",
 			"style": {
@@ -61,21 +72,26 @@
 		{
 			"path": "pages/login/login",
 			"style": {
+				
 				"navigationBarTitleText": "请登录",
 				"enablePullDownRefresh": true
 			}
 
 		}
 
-	    ,{
-            "path" : "pages/med/med",
+	    
+        ,{
+            "path" : "pages/method/method",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "药品设置",
+                "navigationBarBackgroundColor":"#098ade",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": true
             }
             
         }
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

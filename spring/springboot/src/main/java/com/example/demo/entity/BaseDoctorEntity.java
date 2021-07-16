@@ -6,8 +6,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "base_doctor", schema = "doctor", catalog = "")
 public class BaseDoctorEntity {
-    private String userId;
-    private String doctorId; /**医生id*/
+    private int userId;
+    private int doctorId; /**医生id*/
     private String doctorName; /**医生姓名*/
     private String deptName; /**科室名称*/
     private String avatarUrl; /**医生头像链接*/
@@ -16,11 +16,11 @@ public class BaseDoctorEntity {
 
     @Id
     @Column(name = "doctor_id")
-    public String getDoctorId() {
+    public int getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(String doctorId) {
+    public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
     }
 
@@ -76,11 +76,11 @@ public class BaseDoctorEntity {
 
     @Basic
     @Column(name = "user_id")
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

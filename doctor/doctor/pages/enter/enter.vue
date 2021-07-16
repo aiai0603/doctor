@@ -13,6 +13,7 @@
 
 			}
 		},
+		
 		methods: {
 		
 			enter() {
@@ -37,7 +38,7 @@
 	}
 
 	.in {
-		width: 80%;
+		width: 70%;
 		display: flex;
 		flex-flow: row;
 		justify-content: center;
@@ -83,7 +84,7 @@
 	.main {
 		height: 100%;
 		width: 100%;
-		background: url(../../static/img/3-2.jpg);
+		background: url(../../static/img/3-2.png);
 		background-size: 100% 100%;
 		display: flex;
 		flex-flow: column;

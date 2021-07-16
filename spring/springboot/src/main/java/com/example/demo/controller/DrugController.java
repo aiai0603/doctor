@@ -28,11 +28,6 @@ public class DrugController {
     @Autowired
     DrugMapper drugMapper;
 
-    /*@GetMapping("FuzzyQuery")
-    public ResponseData FuzzyQuery(@RequestParam(value = "condition",defaultValue = "") String search){
-        return new ResponseData(ExceptionMsg.FIND,drugMapper.findByIndex(search));
-    }*/
-
     @GetMapping("queryAll")
     public ResponseData FuzzyQuery(@RequestParam(value = "start",defaultValue = "") Integer start,@RequestParam(value = "condition",defaultValue = "") String search){
         PageHelper.startPage(start,10,"drug_id asc");
@@ -44,5 +39,25 @@ public class DrugController {
         else{
             return new ResponseData(ExceptionMsg.NOMORE,"没有更多了");
         }
+    }
+
+    @GetMapping("allFrequency")
+    public ResponseData findAllFrequency(){
+        return new ResponseData(ExceptionMsg.SUCCESS,drugMapper.findFrequency());
+    }
+
+    @GetMapping("allUsage")
+    public ResponseData findAllUsage(){
+        return new ResponseData(ExceptionMsg.SUCCESS,drugMapper.findUsage());
+    }
+
+    @GetMapping("index")
+    public ResponseData findByDrugId(@RequestParam("drugId") Integer drugId){
+        BaseDrugEntity drug = new BaseDrugEntity();
+        drug = drugMapper.findByDrugId(drugId);
+        if(drug==null){
+            return new ResponseData(ExceptionMsg.FAILED,"未查询到药品");
+        }
+        return new ResponseData(ExceptionMsg.FIND,drug);
     }
 }

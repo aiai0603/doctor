@@ -2,22 +2,23 @@ package com.example.demo.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "consult_ask", schema = "doctor", catalog = "")
 public class ConsultAskEntity {
-    private String consultId; /**问诊id*/
+    private int consultId; /**问诊id*/
     private String deptName; /**科室名称*/
-    private String doctorId; /**医生id*/
+    private int doctorId; /**医生id*/
     private String doctorName; /**医生姓名*/
     private String doctorLevelName; /**医生职称*/
-    private String createUserId; /**操作用户id*/
+    private int createUserId; /**操作用户id*/
     private String personName; /**配药人姓名*/
     private String personCardType; /**配药人证件类型，01居民身份证 02居民户口簿 03护照 04军官证 05驾驶证 06港澳居民来往内地通行证 07台湾居民来往内地通行证 11出生证明 12港澳居民身份证 13港澳居民居住证 99其他法定有效证件*/
     private String personCardId; /**配药人证件号码*/
     private String personGenderName; /**配药人性别，1男，2女*/
-    private Timestamp personBirthDate; /**配药人出生日期*/
+    private Date personBirthDate; /**配药人出生日期*/
     private int personAge; /**配药人年龄*/
     private String personPhoneNo; /**配药人手机号码*/
     private String question; /**问题描述*/
@@ -32,11 +33,11 @@ public class ConsultAskEntity {
 
     @Id
     @Column(name = "consult_id")
-    public String getConsultId() {
+    public int getConsultId() {
         return consultId;
     }
 
-    public void setConsultId(String consultId) {
+    public void setConsultId(int consultId) {
         this.consultId = consultId;
     }
 
@@ -52,11 +53,11 @@ public class ConsultAskEntity {
 
     @Basic
     @Column(name = "doctor_id")
-    public String getDoctorId() {
+    public int getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(String doctorId) {
+    public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
     }
 
@@ -82,11 +83,11 @@ public class ConsultAskEntity {
 
     @Basic
     @Column(name = "create_user_id")
-    public String getCreateUserId() {
+    public int getCreateUserId() {
         return createUserId;
     }
 
-    public void setCreateUserId(String createUserId) {
+    public void setCreateUserId(int createUserId) {
         this.createUserId = createUserId;
     }
 
@@ -132,11 +133,11 @@ public class ConsultAskEntity {
 
     @Basic
     @Column(name = "person_birth_date")
-    public Timestamp getPersonBirthDate() {
+    public Date getPersonBirthDate() {
         return personBirthDate;
     }
 
-    public void setPersonBirthDate(Timestamp personBirthDate) {
+    public void setPersonBirthDate(Date personBirthDate) {
         this.personBirthDate = personBirthDate;
     }
 

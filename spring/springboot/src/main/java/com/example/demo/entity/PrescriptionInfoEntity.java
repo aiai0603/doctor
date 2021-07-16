@@ -7,42 +7,43 @@ import java.util.Objects;
 @Entity
 @Table(name = "prescription_info", schema = "doctor", catalog = "")
 public class PrescriptionInfoEntity {
-    private String prescriptionId; /**处方id*/
-    private String userId; /**患者id*/
-    private String consultId; /**问诊id*/
-    private String prescriptionType; /**处方类型，1西药，2中成药，3中草药*/
-    private String doctorId; /**开方医生id*/
-    private String doctorName; /**开方医生姓名*/
-    private Timestamp createTime; /**开方时间*/
-    private String prescriptionStatus; /**处方提交状态，0未提交 ，1已提交 */
+    private int prescriptionId;
+    private int userId;
+    private int consultId;
+    private String prescriptionType;
+    private int doctorId;
+    private String doctorName;
+    private Timestamp createTime;
+    private String prescriptionStatus;
+
 
     @Id
     @Column(name = "prescription_id")
-    public String getPrescriptionId() {
+    public int getPrescriptionId() {
         return prescriptionId;
     }
 
-    public void setPrescriptionId(String prescriptionId) {
+    public void setPrescriptionId(int prescriptionId) {
         this.prescriptionId = prescriptionId;
     }
 
     @Basic
     @Column(name = "user_id")
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
     @Basic
     @Column(name = "consult_id")
-    public String getConsultId() {
+    public int getConsultId() {
         return consultId;
     }
 
-    public void setConsultId(String consultId) {
+    public void setConsultId(int consultId) {
         this.consultId = consultId;
     }
 
@@ -58,11 +59,11 @@ public class PrescriptionInfoEntity {
 
     @Basic
     @Column(name = "doctor_id")
-    public String getDoctorId() {
+    public int getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(String doctorId) {
+    public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
     }
 
@@ -106,6 +107,6 @@ public class PrescriptionInfoEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(prescriptionId, userId, consultId, prescriptionType, doctorId, doctorName, createTime, prescriptionStatus);
+        return Objects.hash(prescriptionId,userId, consultId, prescriptionType, doctorId, doctorName, createTime, prescriptionStatus);
     }
 }

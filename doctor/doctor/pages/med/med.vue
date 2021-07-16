@@ -1,15 +1,15 @@
 <template>
 	<view>
 		<view class="main">
-			<u-search placeholder="搜索药品" v-model="keyword" shape="shape" bg-color="#f7f8fa"
-			action-text="取消" @custom="search()"  @change="change()"></u-search>
+			<u-search placeholder="搜索药品" v-model="keyword" shape="shape" bg-color="#f7f8fa" action-text="取消"
+				@custom="search()" @change="change()"></u-search>
 		</view>
 		<view class="result">
 			搜索结果({{sum}}条)
 		</view>
 		<scroll-view scroll-y @scrolltolower="onreachBottom" :style="{height:swiperheight}" class="swiperss">
 			<view class="list">
-				<view class="list-item" v-for="(item,list) in list">
+				<view class="list-item" v-for="(item,index) in list" @click="goto(item.drugId)">
 					<view>
 						{{item.drugName}} {{item.dose}}{{item.doseUnit}}
 					</view>
@@ -22,7 +22,7 @@
 				没有更多了
 			</view>
 			<view>
-				
+
 			</view>
 		</scroll-view>
 
@@ -31,66 +31,91 @@
 </template>
 
 <script>
+	import {
+		request,
+		showToast
+	} from "../../static/js/request.js"
 	export default {
 		data() {
 			return {
-				sum:0,
+				pid: 0,
+				sum: 0,
 				keyword: '',
 				list: [],
 				swiperheight: 200,
-				start:1,
-				size:0,
+				start: 1,
+				size: 0,
 
 			}
+		},
+		onLoad(option) {
+			this.pid = option.id
 		},
 		onReady() {
 			//swiper高度自适应
 			this.getElementHeight('.swiperss');
 			this.getData()
-				
+
 		},
 		methods: {
-			search(){
+
+			goto(id) {
 			
-					this.keyword = ''
+				uni.navigateTo({
+					url: '../method/method?id=' + id + '&pid=' + this.pid
+				})
 				
-			
+
+			},
+			search() {
+
+				this.keyword = ''
+
+
 			},
 			getData() {
-				uni.request({
-					url: 'http://192.168.43.70:8080/drug/queryAll', //仅为示例，并非真实接口地址。
+				request({
+					url: '/drug/queryAll', //仅为示例，并非真实接口地址。
 					data: {
 						start: this.start,
-						condition:this.keyword
-					},
-					success: (res) => {
-						if (res.data.rspCode == 200)
-						{
-							this.list = this.list.concat(res.data.data.list);
-							this.sum = res.data.data.total
-						}
-						
-			
+						condition: this.keyword
 					}
+				}).
+				then(res => {
+					if (res.data.rspCode == 200) {
+						this.list = this.list.concat(res.data.data.list);
+						this.sum = res.data.data.total
+
+					} else if (res.data.rspCode == 999) {
+						uni.showToast({
+							icon: 'none',
+							title: res.data.data ? res.data.data : '网络异常',
+							duration: 2000
+						});
+
+					}
+
+
 				});
+
 			},
-			
+
 			onreachBottom() {
-			
+
 				this.start++;
 				this.getData();
-			
+
 			},
-			
-				
-			change(){
-				this.list=[];
-				this.start=1;
+
+
+			change() {
+				this.list = [];
+				this.start = 1;
 				this.getData();
 			},
-			
-			
-			
+
+
+
 			getElementHeight(element) {
 				setTimeout(() => {
 					let query = uni.createSelectorQuery().in(this);
@@ -106,7 +131,7 @@
 										'px';
 								},
 							})
-			
+
 						}
 					})
 				}, 20)
@@ -117,7 +142,7 @@
 </script>
 
 <style>
-	.more{
+	.more {
 		display: flex;
 		flex-flow: row;
 		justify-content: center;
@@ -125,14 +150,20 @@
 		font-size: 32rpx;
 		margin: 40rpx;
 	}
-	.list-item{
-		padding: 30rpx 20rpx ;
+
+	.list-item {
+		padding: 30rpx 20rpx;
 		font-size: 32rpx;
 		border-bottom: #eeeeee 1rpx solid;
 	}
-	.list-item view{
-		padding: 5rpx ;
-		
+	
+	.list-item:active {
+		background-color: #f7f7f7;
+	}
+
+	.list-item view {
+		padding: 5rpx;
+
 	}
 
 	.list {
