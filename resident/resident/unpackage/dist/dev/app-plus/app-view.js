@@ -2689,7 +2689,7 @@ var render = function() {
                         model: {
                           value: _vm._$g(53, "v-model"),
                           callback: function() {},
-                          expression: "form.patientInfo.name"
+                          expression: "popupform.name"
                         }
                       })
                     ],
@@ -2705,7 +2705,7 @@ var render = function() {
                         model: {
                           value: _vm._$g(55, "v-model"),
                           callback: function() {},
-                          expression: "form.patientInfo.id"
+                          expression: "popupform.id"
                         }
                       })
                     ],
@@ -2726,7 +2726,7 @@ var render = function() {
                         model: {
                           value: _vm._$g(57, "v-model"),
                           callback: function() {},
-                          expression: "form.patientInfo.sex"
+                          expression: "popupform.sex"
                         }
                       }),
                       _c("u-picker", {
@@ -2760,7 +2760,7 @@ var render = function() {
                         model: {
                           value: _vm._$g(60, "v-model"),
                           callback: function() {},
-                          expression: "form.patientInfo.birthday"
+                          expression: "popupform.birthday"
                         }
                       }),
                       _c("u-picker", {
@@ -2789,7 +2789,7 @@ var render = function() {
                         model: {
                           value: _vm._$g(63, "v-model"),
                           callback: function() {},
-                          expression: "form.patientInfo.phone"
+                          expression: "popupform.phone"
                         }
                       })
                     ],

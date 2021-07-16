@@ -98,26 +98,26 @@
 		<u-button type="success" style="height: 100rpx;">提交</u-button>
 		
 		<!--信息弹出层-->
-		<u-popup v-model="showInfo" mode="center" width="90%" height="55%" border-radius="20">
+		<u-popup v-model="showInfo" mode="center" width="90%" height="55%" border-radius="20" :closeable="true">
 			<view class="infoForm">
 				<h3 style="margin: 30rpx 0;">填写信息</h3>
-				<u-form :model="form.patientInfo" ref="infoFrom" label-align="left" label-width="200" :label-style="labelStyle">
+				<u-form :model="popupform" ref="infoFrom" label-align="left" label-width="200" :label-style="labelStyle">
 					<u-form-item label="姓名" :required="true" :border-bottom="false">
-						<u-input v-model="form.patientInfo.name" :border="true" class="form-item" :clearable="false" placeholder="请填写姓名"></u-input>
+						<u-input v-model="popupform.name" :border="true" class="form-item" :clearable="false" placeholder="请填写姓名"></u-input>
 					</u-form-item>
 					<u-form-item label="身份证号" :required="true" :border-bottom="false">
-						<u-input v-model="form.patientInfo.id" :border="true" class="form-item" :clearable="false" placeholder="请填写身份证号"></u-input>
+						<u-input v-model="popupform.id" :border="true" class="form-item" :clearable="false" placeholder="请填写身份证号"></u-input>
 					</u-form-item>
 					<u-form-item label="性别" :required="true" :border-bottom="false">
-						<u-input type="select" v-model="form.patientInfo.sex" :border="true" class="form-item" placeholder="请选择性别" @click="showSex = true"></u-input>
+						<u-input type="select" v-model="popupform.sex" :border="true" class="form-item" placeholder="请选择性别" @click="showSex = true"></u-input>
 						<u-picker v-model="showSex" mode="selector" :default-selector="[0]" :range="selectorSex" @confirm="confirmSex"></u-picker>
 					</u-form-item>
 					<u-form-item label="出生日期" :required="true" :border-bottom="false">
-						<u-input type="select" v-model="form.patientInfo.birthday" :border="true" class="form-item" placeholder="请填写出生日期" @click="showBirthday = true"></u-input>
+						<u-input type="select" v-model="popupform.birthday" :border="true" class="form-item" placeholder="请填写出生日期" @click="showBirthday = true"></u-input>
 						<u-picker v-model="showBirthday" mode="time" @confirm="confirmBirthday"></u-picker>
 					</u-form-item>
 					<u-form-item label="手机号" :required="true" :border-bottom="false">
-						<u-input type="number" v-model="form.patientInfo.phone" :border="true" class="form-item" :clearable="false" placeholder="请填写手机号"></u-input>
+						<u-input type="number" v-model="popupform.phone" :border="true" class="form-item" :clearable="false" placeholder="请填写手机号"></u-input>
 					</u-form-item>
 				</u-form>
 				<u-button type="primary" style="margin-top: 50rpx;" @click="saveInfo()">保存</u-button>
@@ -156,58 +156,67 @@
 					drug: ["甘草"],
 					value: ''
 				},
+				popupform: {
+					name: '',
+					id: '',
+					sex: '',
+					age: '',
+					birthday: '',
+					phone: ''
+				},
 				text: '  请上传病情照片、化验单、检查资料、报告单、药品处方单,若为皮肤问题,建议对准患处拍摄。照片仅自己和医生可见',
 				selectorSex: ['男', '女']
 			}
 		},
 		methods: {
 			confirmSex (index) {
-				this.form.patientInfo.sex = this.selectorSex[index]
+				this.popupform.sex = this.selectorSex[index]
 			},
 			confirmBirthday (e) {
-				this.form.patientInfo.birthday = e.year + '-' + e.month + '-' + e.day
-				this.form.patientInfo.age = getAge(e.year, e.month, e.day)
+				this.popupform.birthday = e.year + '-' + e.month + '-' + e.day
+				this.popupform.age = getAge(e.year, e.month, e.day)
 			},
 			saveInfo () {
-				var NameReg = /^[\u4e00-\u9fa5]{2,6}(·|•|‧|•|⋅|ㆍ|・|●|[\u4e00-\u9fa5]{1,6}){0,2}$/;
+				var NameReg = /^[\u4e00-\u9fa5]{2,6}((·|•|‧|•|⋅|ㆍ|・|●)[\u4e00-\u9fa5]{1,6}){0,2}$/;
 				var IdReg =/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/;
                 var PhoneReg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
 				
-				if(!NameReg.test(this.form.patientInfo.name)) {
+				console.log(this.popupform)
+				if(!NameReg.test(this.popupform.name)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的姓名',
 						duration: 2000
 					})
-				} else if (!IdReg.test(this.form.patientInfo.id)) {
+				} else if (!IdReg.test(this.popupform.id)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的身份证号',
 						duration: 2000
 					})
-				} else if (!this.form.patientInfo.sex) {
+				} else if (!this.popupform.sex) {
 					uni.showToast({
 						icon: 'none',
 						title: '请选择性别',
 						duration: 2000
 					})
-				} else if (!this.form.patientInfo.birthday) {
+				} else if (!this.popupform.birthday) {
 					uni.showToast({
 						icon: 'none',
 						title: '请选择出生日期',
 						duration: 2000
 					})
-				} else if (!PhoneReg.test(this.form.patientInfo.phone)) {
+				} else if (!PhoneReg.test(this.popupform.phone)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的手机号',
 						duration: 2000
 					})
 				} else {
-					this.showInfo = true
+					this.form.patientInfo = JSON.parse(JSON.stringify(this.popupform)) /*深拷贝*/
+					this.showInfo = false
 				}
-				
-			}
+			},
 		},
 	}
 </script>
