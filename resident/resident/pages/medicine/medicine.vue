@@ -55,7 +55,10 @@
 				let nowPage = pages[ pages.length - 1];  //当前页页面实例
 				let prevPage = pages[ pages.length - 2 ];  //上一页页面实例
 				if (prevPage.$vm.form.drugList.indexOf(this.list[id - 1].drugName) == -1) {
-					prevPage.$vm.form.drugList.push(this.list[id - 1].drugName); 
+					prevPage.$vm.form.drugList.push({
+						drugId: id,
+						drugName: this.list[id - 1].drugName
+					}); 
 				}  
 				uni.navigateBack({  //uni.navigateTo跳转的返回，默认1为返回上一级
 					delta: 1

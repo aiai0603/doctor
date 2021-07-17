@@ -62,7 +62,7 @@
 			</u-form-item>
 			<view v-if="form.drugList.length != 0" class="drug">
 				<block v-for="(item, index) in form.drugList">
-					<u-tag type="success" :text="item" style="margin: 20rpx 25rpx;" :closeable="true" @close="delTag(index)"></u-tag>
+					<u-tag type="success" :text="form.drugList[index].drugName" style="margin: 20rpx 25rpx;" :closeable="true" @close="delTag(index)"></u-tag>
 				</block>
 			</view>
 			
@@ -73,8 +73,8 @@
 				<u-form-item label="病情描述" prop="describe" style="width: 100%;" :required="true"></u-form-item>
 			</view>
 			<view style="width: 100%; display: flex; justify-content: center; flex-direction: row;">
-				<view style="width: 90%;">
-					<u-input type="textarea" :autoHeight="true" v-model="form.value" placeholder="请准确描述病情,以便医生更好判断(不少于5个字)"></u-input>
+				<view style="width: 90%; margin-top: 20rpx;">
+					<u-input type="textarea" :autoHeight="true" :clearable="false" v-model="form.value" placeholder="请准确描述病情,以便医生更好判断(不少于5个字)"></u-input>
 				</view>
 			</view>
 			
@@ -86,7 +86,7 @@
 			</view>
 			<view style="width: 100%; display: flex; align-items: center; margin-top: 30rpx; flex-direction: column;">
 				<view style="width: 90%;">
-					<u-upload ref="uUpload" :auto-upload="false" :action="action"></u-upload>
+					<u-upload ref="uUpload" :auto-upload="false" :deletable="deletable" :action="action" @on-uploaded="success" @on-choose-complete="choose" @on-remove="remove"></u-upload>
 				</view>
 				<view style="width: 85%; margin-top: 60rpx; color: #ccc; margin-bottom: 80rpx;">
 					<text space="emsp">
@@ -96,7 +96,8 @@
 			</view>
 		</u-form>
 		
-		<u-button type="success" style="height: 100rpx;" @click="submit()">提交</u-button>
+		<u-button type="success" style="height: 100rpx;" @click="submit()" v-if="!img">提交信息</u-button>
+		<u-button type="primary" style="height: 100rpx;" @click="saveImg()" v-else>保存图片</u-button>
 		
 		<!--信息弹出层-->
 		<u-popup v-model="showInfo" mode="center" width="90%" height="55%" border-radius="20" :closeable="true">
@@ -107,7 +108,7 @@
 						<u-input v-model="popupform.name" :border="true" class="form-item" :clearable="false" placeholder="请填写姓名"></u-input>
 					</u-form-item>
 					<u-form-item label="身份证号" :required="true" :border-bottom="false">
-						<u-input v-model="popupform.id" :border="true" class="form-item" :clearable="false" placeholder="请填写身份证号"></u-input>
+						<u-input v-model="popupform.number" :border="true" class="form-item" :clearable="false" placeholder="请填写身份证号"></u-input>
 					</u-form-item>
 					<u-form-item label="性别" :required="true" :border-bottom="false">
 						<u-input type="select" v-model="popupform.sex" :border="true" class="form-item" placeholder="请选择性别" @click="showSex = true"></u-input>
@@ -124,15 +125,22 @@
 				<u-button type="primary" style="margin-top: 50rpx;" @click="saveInfo()">保存</u-button>
 			</view>
 		</u-popup>
+		
+		<u-modal v-model="showModal" content="提交成功" :show-title="false" width="50%" @confirm="confirm()"></u-modal>
 	</view>
 </template>
 
 <script>
 	import { getAge } from '../../utils/age.js'
+	import { request, showToast } from "../../api/request.js"
 	
 	export default {
 		data() {
 			return {
+				deletable: true,
+				img: false,
+				showModal: false,
+				uploadSuccess: false,
 				showInfo: false,
 				showSex: false,
 				showBirthday: false,
@@ -145,6 +153,7 @@
 				},
 				form: {
 					doctor: {
+						id: '',
 						avatar: '',
 						name: '',
 						level: '',
@@ -152,7 +161,7 @@
 					},
 					patientInfo: {
 						name: '',
-						id: '',
+						number: '',
 						sex: '',
 						age: '',
 						birthday: '',
@@ -164,7 +173,7 @@
 				},
 				popupform: {
 					name: '',
-					id: '',
+					number: '',
 					sex: '',
 					age: '',
 					birthday: '',
@@ -172,7 +181,9 @@
 				},
 				text: '  请上传病情照片、化验单、检查资料、报告单、药品处方单,若为皮肤问题,建议对准患处拍摄。照片仅自己和医生可见',
 				selectorSex: ['男', '女'],
-				action: 'http://47.97.158.11:8088/consult/addPhoto'
+				action: 'http://192.168.43.70:8088/api/upload',
+				photos: '',
+				ageInt: 0
 			}
 		},
 		methods: {
@@ -180,8 +191,14 @@
 				this.popupform.sex = this.selectorSex[index]
 			},
 			confirmBirthday (e) {
+				this.ageInt = getAge(e.year, e.month, e.day)
 				this.popupform.birthday = e.year + '-' + e.month + '-' + e.day
-				this.popupform.age = getAge(e.year, e.month, e.day)
+				this.popupform.age = getAge(e.year, e.month, e.day) + '岁'
+			},
+			confirm () {
+				uni.navigateTo({
+					url: '../record/record'
+				})
 			},
 			saveInfo () {
 				var NameReg = /^[\u4e00-\u9fa5]{2,6}((·|•|‧|•|⋅|ㆍ|・|●)[\u4e00-\u9fa5]{1,6}){0,2}$/;
@@ -194,7 +211,7 @@
 						title: '请输入正确的姓名',
 						duration: 2000
 					})
-				} else if (!IdReg.test(this.popupform.id)) {
+				} else if (!IdReg.test(this.popupform.number)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的身份证号',
@@ -242,13 +259,107 @@
 				this.form.drugList.splice(index, 1)
 			},
 			submit () {
-				let files = [];
-				console.log(this.$refs.uUpload.lists)
-				files = this.$refs.uUpload.lists.filter(val => {
-					return val.progress == 100;
-				})
+				if (!this.form.doctor.id) {
+					uni.showToast({
+						icon: 'none',
+						title: '请选择医生',
+						duration: 2000
+					})
+				} else if (!this.form.patientInfo.name) {
+					uni.showToast({
+						icon: 'none',
+						title: '请填写信息',
+						duration: 2000
+					})
+				} else if (!this.form.diagnosis) {
+					uni.showToast({
+						icon: 'none',
+						title: '请选择诊断',
+						duration: 2000
+					})
+				} else if (this.form.drugList.length == 0) {
+					uni.showToast({
+						icon: 'none',
+						title: '请选择药品',
+						duration: 2000
+					})
+				} else if (this.form.value.length < 5) {
+					uni.showToast({
+						icon: 'none',
+						title: '病情至少需要5个字',
+						duration: 2000
+					})
+				} else {
+					let ids = []
+					let names = []
+					for (var drug of this.form.drugList) {
+						ids.push(drug.drugId)
+						names.push(drug.drugName)
+					}
+					let drug_id = ids.join(',')
+					let drug_name = names.join(',')
+					let finalInfo = {
+						deptName: this.form.doctor.dept,
+						doctorId: this.form.doctor.id,
+						doctorName: this.form.doctor.name,
+						doctorLevelName: this.form.doctor.level,
+						createUserId: 1,
+						personName: this.form.patientInfo.name,
+						personCardType: '01',
+						personCardId: this.form.patientInfo.number,
+						personGenderName: this.form.patientInfo.sex,
+						personBirthDate: this.form.patientInfo.birthday,
+						personAge: this.ageInt,
+						personPhoneNo: this.form.patientInfo.phone,
+						question: this.form.value,
+						diagnosis: this.form.diagnosis,
+						drugIds: drug_id,
+						drugNames: drug_name,
+						photoIds: this.photos,
+						consultStatus: 2,
+						createTime: '',
+						acceptTime: '',
+						finishTime: ''
+					}
+					
+					request({
+						url: '/consult/add',
+						method: 'POST',
+						data: finalInfo
+					}).
+					then(res => {
+						if (res.data.rspCode == 200) {
+							this.showModal = true
+						} else if (res.data.rspCode == 999) {
+							uni.showToast({
+								icon: 'none',
+								title: res.data.data ? res.data.data : '网络异常',
+								duration: 2000
+							});
+						} 
+					});
+					console.log(finalInfo)
+				}
+			},
+			saveImg () {
 				this.$refs.uUpload.upload();
-				console.log(files)
+			},
+			success (lists, name) {
+				this.img = false
+				this.deletable = false
+				let imgList = []
+				for (var index in lists) {
+					imgList.push(lists[index].response.data)
+				}
+				this.photos = imgList.join(',')
+			},
+			choose () {
+				this.img = true
+			},
+			remove (index, lists, name) {
+				if (lists.length == 0) {
+					this.img = false
+				}
 			}
 		},
 	}
