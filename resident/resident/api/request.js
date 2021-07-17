@@ -1,6 +1,6 @@
-const baseUrl = "http://47.97.158.11:8088";//这里放置url域名
+const baseUrl = "http://192.168.43.70:8088";//这里放置url域名
 export function request(options){//封装的requset
-	let { url,data,method } = options;
+	let { url,data,method,headers } = options;
 	data = data || {},
 	
 	uni.showToast({//请求数据时的loading
@@ -13,6 +13,7 @@ export function request(options){//封装的requset
 		    url: baseUrl + url, //仅为示例，并非真实接口地址。
 		    data,
 			method:method||"GET",//默认请求方式是get
+			headers: headers || {},
 		    success: (res) => {
 				resolve(res)
 		    }

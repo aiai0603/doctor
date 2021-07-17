@@ -15,16 +15,16 @@ export function getAge(year, month, day) {
       if (nowMonth == birthMonth) {
         var dayDiff = nowDay - birthDay; //日之差 
         if (dayDiff < 0) {
-          returnAge = ageDiff - 1 + '岁';
+          returnAge = ageDiff - 1;
         } else {
-          returnAge = ageDiff + '岁';
+          returnAge = ageDiff;
         }
       } else {
         var monthDiff = nowMonth - birthMonth; //月之差 
         if (monthDiff < 0) {
-          returnAge = ageDiff - 1 + '岁';
+          returnAge = ageDiff - 1;
         } else {
-          returnAge = ageDiff + '岁';
+          returnAge = ageDiff ;
         }
       }
     } else {
