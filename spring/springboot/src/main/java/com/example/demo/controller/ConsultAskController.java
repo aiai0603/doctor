@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -79,35 +80,18 @@ public class ConsultAskController {
 
     /**
      * 添加复诊配药
-     * @param map1
+     * @param consultAskEntity
      * @return
      */
     @PostMapping("add")
-    public ResponseData addConsult(@RequestBody Map<String,Object> map1){
-      ConsultAskEntity consult = new ConsultAskEntity();
-      consult.setDeptName((String)map1.get("deptName"));
-      consult.setDoctorId(Integer.parseInt((String) map1.get("doctorId")));
-      consult.setDoctorName((String)map1.get("doctorName"));
-      consult.setDoctorLevelName((String)map1.get("levelName"));
-      consult.setCreateUserId((Integer)map1.get("userId"));
-      consult.setPersonName((String)map1.get("personName"));
-      consult.setPersonCardType((String) map1.get("cardType"));
-      consult.setPersonCardId((String)map1.get("cardId"));
-      consult.setPersonGenderName((String)map1.get("gender"));
-      consult.setPersonBirthDate((Timestamp)map1.get("birth"));
-      consult.setPersonAge((Integer)map1.get("age"));
-      consult.setPersonPhoneNo((String)map1.get("phone"));
-      consult.setQuestion((String)map1.get("question"));
-      consult.setDiagnosis((String)map1.get("diagnosis"));
-      consult.setDrugIds((String)map1.get("drugsId"));
-      consult.setDrugNames((String)map1.get("drugsName"));
-      consult.setPhotoIds((String)map1.get("photo"));
-      consult.setConsultStatus((Integer)map1.get("status"));
-      consult.setCreateTime((Timestamp)map1.get("createTime"));
-      consult.setAcceptTime((Timestamp)map1.get("acceptTime"));
-      consult.setFinishTime(null);
-      consultAskRepository.save(consult);
-      return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
+    public ResponseData addConsult(@RequestBody ConsultAskEntity consultAskEntity){
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+       consultAskEntity.setCreateTime(d);
+       consultAskEntity.setAcceptTime(d);
+       consultAskEntity.setFinishTime(null);
+       consultAskRepository.save(consultAskEntity);
+       System.out.println(consultAskEntity);
+       return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
     }
 
     /**
@@ -131,7 +115,9 @@ public class ConsultAskController {
     @PostMapping("finish")
     public ResponseData finishConsult(@RequestBody Map<String,Object> map1){
         Date time = new Date();
-
+        if(map1==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入数据为空");
+        }
         int consult = Integer.parseInt((String) map1.get("consultId"));
         try{
             List<PrescriptionInfoEntity> list  =  precriptionMapper.findByConsultStatus(consult,"1");
@@ -159,4 +145,23 @@ public class ConsultAskController {
         }
 
     }
+
+    /**
+     * 通过用户id查找其复诊申请
+     * @return
+     */
+    @GetMapping("showConsult")
+    public ResponseData findConsultByUser(@RequestParam(value = "userId",defaultValue = "")Integer user){
+        if(user==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入数据为空");
+        }
+        try {
+           SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+           List<ConsultAskEntity> list =   consultAskMapper.findByUser(user);
+            return new ResponseData(ExceptionMsg.SUCCESS,list);
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+    }
+
 }

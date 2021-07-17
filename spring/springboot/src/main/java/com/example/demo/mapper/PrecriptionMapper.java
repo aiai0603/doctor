@@ -27,9 +27,8 @@ public interface PrecriptionMapper {
     @Select("SELECT * FROM prescription_info WHERE consult_id = #{consult} AND prescription_status = #{status}")
     List<PrescriptionInfoEntity> findByConsultStatus(@Param("consult")Integer consult,@Param("status") String status);
 
-    @Select("SELECT * FROM prescription_info WHERE consult_id = #{consult} AND doctor_id = #{doctor} AND " +
-            "prescription_status = #{status}")
-    List<PrescriptionInfoEntity> findByConsultDoctor(@Param("consult")Integer consult,@Param("doctor")Integer doctor,
+    @Select("SELECT * FROM prescription_info WHERE consult_id = #{consult} AND prescription_status = #{status}")
+    List<PrescriptionInfoEntity> findByConsultDoctor(@Param("consult")Integer consult,
                                                      @Param("status")String status);
 
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("drug")
@@ -110,7 +111,7 @@ public class DrugController {
     }
 
     /**
-     * 添加药品
+     * 添加/修改药品
      * @param baseDrugEntity
      * @return
      */
@@ -127,5 +128,23 @@ public class DrugController {
         }
     }
 
+    /**
+     * 删除药品
+     * @param map1
+     * @return
+     */
+    @PostMapping("deleteDrug")
+    public ResponseData deleteDrug(@RequestBody Map<String,String> map1){
+        if(map1==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入数据为空");
+        }
+        int id = Integer.parseInt(map1.get("drugId"));
+        try{
+            drugMapper.deleteDrug(id);
+            return new ResponseData(ExceptionMsg.SUCCESS,"删除成功");
+        }catch(Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+    }
 
 }

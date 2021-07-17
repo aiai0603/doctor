@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 import com.example.demo.entity.BaseDicDrugFrequencyEntity;
 import com.example.demo.entity.BaseDicDrugUsageEntity;
 import com.example.demo.entity.BaseDrugEntity;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -26,5 +27,7 @@ public interface DrugMapper {
     @Select("SELECT * FROM base_dic_drug_usage")
     List<BaseDicDrugUsageEntity> findUsage();
 
+    @Delete("DELETE FROM base_drug WHERE drug_id = #{drug}")
+    void deleteDrug(@Param("drug")Integer drug);
 
 }
