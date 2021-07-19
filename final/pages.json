@@ -1,0 +1,187 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [
+		{
+		    "path" : "pages/enter",
+		    "style" :                                                                                    
+		    {
+		        "app-plus": {
+					"titleNView": false
+				}
+		    } 
+		}
+		,{
+		    "path": "pages/index/index",
+		    "style": {
+			    "navigationStyle": "custom" ,
+			    "navigationBarTextStyle": "white"
+		    }
+	    }    
+	   ,{
+            "path" : "pages/record/record",
+            "style" :                                                                                    
+            {
+				"navigationStyle": "custom" ,
+				"navigationBarTextStyle": "white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/details/details",
+            "style" :                                                                                    
+            {
+                "navigationStyle": "custom" ,
+                "navigationBarTextStyle": "white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/medicine/medicine",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctorList/doctorList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/diagnosis/diagnosis",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/recipel/recipel",
+            "style" :                                                                                    
+            {
+                "navigationStyle": "custom" ,
+                "navigationBarTextStyle": "white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "test/test",
+            "style" :                                                                                    
+            {
+                "navigationStyle": "custom" ,
+                "navigationBarTextStyle": "white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "登录",
+                "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/doctorIndex",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "复诊配药",
+                "navigationBarBackgroundColor":"#1ab394",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/resident/residentIndex",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "首页",
+                "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/resident/details",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "复诊配药详情",
+                "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/resident/record",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "配药记录",
+                "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/resident/medicineList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "新增药品",
+                "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/resident/doctorList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "选择医生",
+                "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/resident/diagnosisList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "选择诊断",
+                "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"background": "#efeff4"
+		}
+	}
+}
