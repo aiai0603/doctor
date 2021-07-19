@@ -168,22 +168,15 @@ public class PrescriptionController {
      * @return
      */
     @GetMapping("showPrescription")
-    public ResponseData showPrecription(@RequestParam(value = "consult",defaultValue = "")Integer consult,@RequestParam(value="type",defaultValue = "")Integer person){
-        if(consult==null||person==null){
+    public ResponseData showPrecription(@RequestParam(value = "consult",defaultValue = "")Integer consult){
+        if(consult==null){
             return new ResponseData(ExceptionMsg.FAILED,"输入数据为空");
         }
         List list = new ArrayList();
         Double sum =0.0;
         try{
             List<PrescriptionInfoEntity> prescriptionInfo = new ArrayList<>();
-            if(person==1){
-                prescriptionInfo = precriptionMapper.findByConsultDoctor(consult,"1");
-            }
-            else{
-                if(consultAskMapper.findByConsult(consult).getConsultStatus()==3){
-                    prescriptionInfo = precriptionMapper.findByConsultDoctor(consult,"1");
-                }
-            }
+            prescriptionInfo = precriptionMapper.findByConsultDoctor(consult,"1");
             for (int i=0;i<prescriptionInfo.size();i++){
                 Map<String,Object> map1 = new HashMap<>();
                 List<PrescriptionDrugEntity> prescriptionDrugList =

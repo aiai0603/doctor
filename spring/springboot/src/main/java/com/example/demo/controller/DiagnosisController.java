@@ -35,19 +35,27 @@ public class DiagnosisController {
      * @return
      */
     @GetMapping("queryAll")
-    public ResponseData findAll(@RequestParam(value = "start",defaultValue = "") Integer start,@RequestParam(value = "condition",defaultValue = "")String search){
+    public ResponseData findAll(@RequestParam(value = "start",defaultValue = "") Integer start,@RequestParam(value = "size",defaultValue = "10") Integer size,@RequestParam(value = "condition",defaultValue = "")String search){
         if(start==null){
             return new ResponseData(ExceptionMsg.FAILED,"输入为空");
         }
-        PageHelper.startPage(start,10,"diagnosis_id asc");
-        List<BaseDiagnosisEntity> list = diagnosisMapper.findByConditon(search);
-        PageInfo<BaseDiagnosisEntity> page = new PageInfo<>(list);
-        if(start<=page.getPages()){
-            return new ResponseData(ExceptionMsg.SUCCESS,page);
+        try{
+            PageHelper.startPage(start,size,"diagnosis_id asc");
+            List<BaseDiagnosisEntity> list = diagnosisMapper.findByConditon(search);
+            PageInfo<BaseDiagnosisEntity> page = new PageInfo<>(list);
+            if(page.getSize()==0){
+                return new ResponseData(ExceptionMsg.ISNULL,page);
+            }
+            if(start<=page.getPages()){
+                return new ResponseData(ExceptionMsg.SUCCESS,page);
+            }
+            else {
+                return new ResponseData(ExceptionMsg.NOMORE,"没有更多了");
+            }
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
         }
-        else {
-            return new ResponseData(ExceptionMsg.NOMORE,"没有更多了");
-        }
+
     }
 
     /**
@@ -61,7 +69,10 @@ public class DiagnosisController {
             return new ResponseData(ExceptionMsg.FAILED,"输入为空");
         }
         try{
-            BaseDiagnosisEntity baseDiagnosisEntity;
+            BaseDiagnosisEntity baseDiagnosisEntity = new BaseDiagnosisEntity();
+            if(diagnosis==-1){
+                return new ResponseData(ExceptionMsg.SUCCESS,baseDiagnosisEntity);
+            }
             baseDiagnosisEntity = diagnosisMapper.findById(diagnosis);
             return new ResponseData(ExceptionMsg.SUCCESS,baseDiagnosisEntity);
         }catch (Exception e){
@@ -80,6 +91,9 @@ public class DiagnosisController {
             return new ResponseData(ExceptionMsg.FAILED,"输入为空");
         }
         try{
+            if(diagnosisMapper.findByDiseases(baseDiagnosisEntity.getDiseasesId())!=null){
+                return new ResponseData(ExceptionMsg.FAILED,"该疾病ID已存在");
+            }
             diagnosisRepository.save(baseDiagnosisEntity);
             return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
         }catch (Exception e){

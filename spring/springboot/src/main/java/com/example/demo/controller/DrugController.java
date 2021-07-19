@@ -40,14 +40,17 @@ public class DrugController {
      * @return
      */
     @GetMapping("queryAll")
-    public ResponseData FuzzyQuery(@RequestParam(value = "start",defaultValue = "") Integer start,@RequestParam(value = "condition",defaultValue = "") String search){
+    public ResponseData FuzzyQuery(@RequestParam(value = "start",defaultValue = "") Integer start,@RequestParam(value = "size",defaultValue = "10") Integer size,@RequestParam(value = "condition",defaultValue = "") String search){
         if(start==null){
             return new ResponseData(ExceptionMsg.FAILED,"输入为空");
         }
         try{
-            PageHelper.startPage(start,10,"drug_id asc");
+            PageHelper.startPage(start,size,"drug_id asc");
             List<BaseDrugEntity> list = drugMapper.findByIndex(search);
             PageInfo<BaseDrugEntity> page = new PageInfo<>(list);
+            if(page.getSize()==0){
+                return new ResponseData(ExceptionMsg.ISNULL,page);
+            }
             if(start<=page.getPages()){
                 return new ResponseData(ExceptionMsg.SUCCESS,page);
             }
@@ -98,6 +101,9 @@ public class DrugController {
             return new ResponseData(ExceptionMsg.FAILED,"出现异常");
         }
         BaseDrugEntity drug = new BaseDrugEntity();
+        if(drugId==-1){
+            return new ResponseData(ExceptionMsg.SUCCESS,drug);
+        }
         try{
             drug = drugMapper.findByDrugId(drugId);
             if(drug==null){

@@ -5,7 +5,8 @@ public enum ExceptionMsg {
     FIND("201", "查找成功"),
     DELETE("202", "删除成功"),
     FAILED("999","操作失败"),
-    NOMORE("401","没有更多了")
+    NOMORE("401","没有更多了"),
+    ISNULL("998","返回数据为空")
     ;
     private ExceptionMsg(String code, String msg) {
         this.code = code;
