@@ -7,10 +7,32 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" class="button" style="margin-right: 10px">导出数据</el-button>
+                <el-button type="primary" class="button" style="margin-right: 10px" @click="exportExcel">导出数据</el-button>
                 <el-input v-model="name" placeholder="手机号码" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
             </div>
+
+
+               <el-table
+                id="alldata"
+                style="display:none"
+                :data="tableDataAll"
+                border
+                class="table"
+                ref="multipleTable"
+                header-cell-class-name="table-header"
+               
+            >
+              
+               <el-table-column prop="userId" label="ID" width="55" align="center"></el-table-column>
+                 <el-table-column prop="miniOpenId" label="openID"></el-table-column>
+               
+                <el-table-column prop="phoneNo" label="手机号码"></el-table-column>
+                 <el-table-column prop="createTime" label="创建时间"></el-table-column>
+               
+             
+             
+            </el-table>
 
             <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
                 <el-table-column prop="userId" label="ID" width="55" align="center"></el-table-column>
@@ -43,6 +65,8 @@
 </template>
 
 <script>
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
     name: 'company',
     data() {
@@ -66,6 +90,32 @@ export default {
         this.getData();
     },
     methods: {
+            exportExcel() {
+  
+                      let time = new Date();
+                      let year = time.getFullYear();
+                      let month = time.getMonth() + 1;
+                      let day = time.getDate();
+                      let name = year + "" + month + "" + day+"-用户信息";
+                      var xlsxParam = { raw: true }
+                      var wb = XLSX.utils.table_to_book(document.getElementById("alldata"),xlsxParam);
+                        var wbout = XLSX.write(wb, {
+                               bookType: "xlsx",
+                               bookSST: true,
+                            type: "array"
+                           });
+                        try {
+                            FileSaver.saveAs(
+                             new Blob([wbout], { type: "application/octet-stream" }),
+                            name + ".xlsx"
+                               );
+                      } catch (e) {
+                            if (typeof console !== "undefined") console.log(e, wbout);
+                        }
+                        return wbout;
+                       
+    },
+
        handleView(index, row){
              this.$router.push("/consult?id="+row.userId+"&type=2");
         },
@@ -101,6 +151,33 @@ export default {
                     if (response.rspCode == '200') {
                         this.tableData = response.data.list;
                         this.pageTotal = response.data.total;
+                    } else{
+                        this.$message.error(response.rspMsg);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+
+
+                this.$axios
+                .get('/accout/findAll', {
+                    params: {
+                        start: this.query.pageIndex ,
+                        condition:this.name,
+                        size:10000000
+                        
+                    },
+                    headers: {
+                        token: localStorage.getItem('token'),
+                        'Content-Type': 'application/json;charset=utf-8' //头部信息
+                    }
+                })
+                .then((response) => {
+                    if (response.rspCode == '200') {
+                        this.tableDataAll = response.data.list;
+        
                     } else{
                         this.$message.error(response.rspMsg);
                     }

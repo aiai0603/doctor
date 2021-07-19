@@ -29,7 +29,7 @@
                         <el-upload
                             style="width: 178px"
                             class="avatar-uploader"
-                            action="http://10.67.128.25:8088/api/upload"
+                            action="http://10.67.46.174:8088/api/upload"
                             :show-file-list="false"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload"
@@ -57,6 +57,7 @@ export default {
     data() {
         return {
             form: {
+                doctorId:-1,
                 doctorName: '',
                 avatarUrl: '',
                 deptName: '',

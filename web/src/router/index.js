@@ -19,27 +19,23 @@ export default new Router({
             meta: { title: '登录' }
         },
         {
+            path: '/',
+            redirect: '/user'
+        },
+        {
             path: '*',
             component:resolve => require(['../components/pages/404.vue'],resolve),
             meta: { title: '404' }
         },
-        {
-            path:'/'  ,
-            redirect:'/index' 
-        },
+     
         {
             path: '/',
           //  component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
             component:resolve => require(['../components/common/Home.vue'],resolve),
-            meta: { title: '首页' },
+            meta: { title: '用户管理' },
             children: [
              
-                {
-                    path: '/index',
-               //     component: () => import(/* webpackChunkName: "table" */ '../components/page/company.vue'),
-                    component:resolve => require(['../components/pages/index.vue'],resolve),
-                    meta: { title: '首页' }
-                },  {
+             {
                     path: '/user',
                //     component: () => import(/* webpackChunkName: "table" */ '../components/page/company.vue'),
                     component:resolve => require(['../components/doctor/user.vue'],resolve),

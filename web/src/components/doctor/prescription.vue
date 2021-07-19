@@ -8,7 +8,7 @@
         <div class="container">
             <div class="handle-box">
                 <el-button class="button" style="margin-right: 10px" @click="back">返回</el-button>
-                <el-button type="primary" class="button" style="margin-right: 10px">导出数据</el-button>
+              
             </div>
 
             <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">

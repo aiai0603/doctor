@@ -11,8 +11,41 @@
                 <el-select v-model="value" style="margin-right: 10px" placeholder="请选择" @change="search">
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
-                <el-button type="primary" class="button" style="margin-right: 10px">导出数据</el-button>
+                <el-button type="primary" class="button" style="margin-right: 10px" @click="exportExcel">导出数据</el-button>
             </div>
+
+            <el-table
+                id="alldata"
+                style="display: none"
+                :data="tableDataAll"
+                border
+                class="table"
+                ref="multipleTable"
+                header-cell-class-name="table-header"
+            >
+             
+                   
+                       
+                          
+                  
+                    
+                <el-table-column prop="personName" label="问诊人" ></el-table-column>
+                <el-table-column prop="personGenderName" label="问诊人性别" ></el-table-column>
+                <el-table-column prop="personAge" label="问诊人年龄"  ></el-table-column>
+                <el-table-column prop="doctorName" label="接诊人" ></el-table-column>
+                <el-table-column prop="personPhoneNo" label="问诊人手机" ></el-table-column>
+                <el-table-column prop="personCardId " label="问诊人身份证" ></el-table-column>
+                <el-table-column prop="diagnosis" label="历史诊断" ></el-table-column>
+                <el-table-column prop="question" label="病情" ></el-table-column>
+                <el-table-column prop="drugNames" label="药品需求" ></el-table-column>
+
+                <el-table-column prop="personName" label="申请者"></el-table-column>
+                <el-table-column prop="doctorName" label="接诊人"></el-table-column>
+                <el-table-column prop="diagnosis" label="诊断"></el-table-column>
+
+                <el-table-column prop="createTime" label="创建时间"></el-table-column>
+                <el-table-column prop="finishTime" label="结束时间" v-if="value == 3"></el-table-column>
+            </el-table>
 
             <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
                 <el-table-column type="expand">
@@ -65,6 +98,9 @@
 
                 <el-table-column label="操作" width="180" align="center" v-if="value == 3">
                     <template slot-scope="scope">
+                        <el-button type="text" class="red" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)"
+                            >驳回</el-button
+                        >
                         <el-button type="text" class="green" icon="el-icon-view" @click="handleView(scope.$index, scope.row)"
                             >查看药方</el-button
                         >
@@ -88,6 +124,9 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver';
+import XLSX from 'xlsx';
+
 export default {
     name: 'company',
     data() {
@@ -122,8 +161,81 @@ export default {
         this.getData();
     },
     methods: {
+        exportExcel() {
+            let time = new Date();
+            let year = time.getFullYear();
+            let month = time.getMonth() + 1;
+            let day = time.getDate();
+            let name = year + '' + month + '' + day + '-诊断信息';
+            var xlsxParam = { raw: true };
+            var wb = XLSX.utils.table_to_book(document.getElementById('alldata'), xlsxParam);
+            var wbout = XLSX.write(wb, {
+                bookType: 'xlsx',
+                bookSST: true,
+                type: 'array'
+            });
+            try {
+                FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), name + '.xlsx');
+            } catch (e) {
+                if (typeof console !== 'undefined') console.log(e, wbout);
+            }
+            return wbout;
+        },
+
         handleView(index, row) {
             this.$router.push('/prescription?id=' + row.consultId);
+        },
+
+        handleDelete(index, row) {
+            this.$confirm('你确定要驳回这个诊断吗', '警告', {
+                confirmButtonText: '确定',
+
+                cancelButtonText: '取消'
+            })
+                .then(() => {
+                    this.$axios
+                        .post(
+                            '/consult/rejectConsult',
+                            { consult: row.consultId },
+                            {
+                                headers: { 'Content-Type': 'application/json;charset=utf-8' } //头部信息
+                            }
+                        )
+                        .then((response) => {
+                            if (response.rspCode != '200') {
+                                this.$message.error(response.rspMsg);
+                            } else if (response.rspCode == '200') {
+                                this.$message.success('操作成功');
+                                this.getData();
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                })
+                .catch((action) => {
+                    if (action != 'cancel') {
+                        this.$axios
+                            .post(
+                                '/consult/rejectConsult',
+                                { consult: row.consultId },
+                                {
+                                    headers: { 'Content-Type': 'application/json;charset=utf-8' } //头部信息
+                                }
+                            )
+                            .then((response) => {
+                                if (response.rspCode != '200') {
+                                    this.$message.error(response.rspMsg);
+                                } else if (response.rspCode == '200') {
+                                    this.$message.success('操作成功');
+                                    this.getData();
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                });
         },
         back() {
             this.$router.go(-1);
@@ -140,7 +252,6 @@ export default {
         },
 
         getData() {
-            
             if (this.$route.query.type == 1) {
                 this.$axios
                     .get('/consult/findAll', {
@@ -157,9 +268,32 @@ export default {
                     })
                     .then((response) => {
                         if (response.rspCode == '201') {
-                          
                             this.tableData = response.data.list;
                             this.pageTotal = response.data.total;
+                        } else {
+                            this.$message.error(response.rspMsg);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                this.$axios
+                    .get('/consult/findAll', {
+                        params: {
+                            start: this.query.pageIndex,
+                            doctorId: this.$route.query.id,
+                            size: 1000000,
+                            type: this.value
+                        },
+                        headers: {
+                            token: localStorage.getItem('token'),
+                            'Content-Type': 'application/json;charset=utf-8' //头部信息
+                        }
+                    })
+                    .then((response) => {
+                        if (response.rspCode == '201') {
+                            this.tableDataAll = response.data.list;
                         } else {
                             this.$message.error(response.rspMsg);
                         }
@@ -186,7 +320,29 @@ export default {
                             this.tableData = response.data.list;
                             this.pageTotal = response.data.total;
                         } else {
-                         
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                this.$axios
+                    .get('/consult/showConsult', {
+                        params: {
+                            start: this.query.pageIndex,
+                            userId: this.$route.query.id,
+                            size: 100000,
+                            type: this.value
+                        },
+                        headers: {
+                            token: localStorage.getItem('token'),
+                            'Content-Type': 'application/json;charset=utf-8' //头部信息
+                        }
+                    })
+                    .then((response) => {
+                        if (response.rspCode == '200') {
+                            this.tableDataAll = response.data.list;
+                        } else {
                         }
                     })
                     .catch(function (error) {

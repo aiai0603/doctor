@@ -7,10 +7,41 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" class="button" style="margin-right: 10px">导出数据</el-button>
+                <el-button type="primary" class="button" style="margin-right: 10px" @click=" exportExcel()">导出数据</el-button>
                 <el-input v-model="name" placeholder="疾病名或者简写" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
             </div>
+
+               <el-table
+                id="alldata"
+                style="display:none"
+                :data="tableDataAll"
+                border
+                class="table"
+                ref="multipleTable"
+                header-cell-class-name="table-header"
+               
+            >
+              
+                 <el-table-column prop="diagnosisId" label="ID" width="55" align="center"></el-table-column>
+                 <el-table-column prop="diseasesName" label="疾病名"></el-table-column>
+                <el-table-column  label="疾病类型" align="center">
+                        <template slot-scope="scope">
+                             <el-tag
+          :type="scope.row.diagnosisType === 1 ? 'primary' : 'success'"
+          disable-transitions>{{scope.row.diagnosisType === 1 ? '中医' : '西医'}}</el-tag>
+                        </template>
+                </el-table-column>
+                <el-table-column prop="diseasesCode" label="疾病代号"></el-table-column>
+                <el-table-column prop="pinyinCode" label="拼音码"></el-table-column>
+                <el-table-column prop="diseasesId" label="疾病代码"></el-table-column>
+               
+             
+             
+            </el-table>
+
+
+
 
             <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
                 <el-table-column prop="diagnosisId" label="ID" width="55" align="center"></el-table-column>
@@ -53,6 +84,9 @@
 </template>
 
 <script>
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
+
 export default {
     name: 'company',
     data() {
@@ -76,6 +110,35 @@ export default {
         this.getData();
     },
     methods: {
+
+          exportExcel() {
+  
+                      let time = new Date();
+                      let year = time.getFullYear();
+                      let month = time.getMonth() + 1;
+                      let day = time.getDate();
+                      let name = year + "" + month + "" + day+"-疾病信息";
+                      var xlsxParam = { raw: true }
+                      var wb = XLSX.utils.table_to_book(document.getElementById("alldata"),xlsxParam);
+                        var wbout = XLSX.write(wb, {
+                               bookType: "xlsx",
+                               bookSST: true,
+                            type: "array"
+                           });
+                        try {
+                            FileSaver.saveAs(
+                             new Blob([wbout], { type: "application/octet-stream" }),
+                            name + ".xlsx"
+                               );
+                      } catch (e) {
+                            if (typeof console !== "undefined") console.log(e, wbout);
+                        }
+                        return wbout;
+                       
+    },
+
+
+
         handleEdit(index, row) {
             this.$router.push('addIll?id='+row.diagnosisId);
         },
@@ -162,8 +225,59 @@ export default {
                     if (response.rspCode == '200') {
                         this.tableData = response.data.list;
                         this.pageTotal = response.data.total;
+                         this.$axios
+                .get('/diagnosis/queryAll', {
+                    params: {
+                        start: this.query.pageIndex ,
+                        condition:this.name
+                    },
+                    headers: {
+                        token: localStorage.getItem('token'),
+                        'Content-Type': 'application/json;charset=utf-8' //头部信息
+                    }
+                })
+                .then((response) => {
+                    if (response.rspCode == '200') {
+                        this.tableData = response.data.list;
+                        this.pageTotal = response.data.total;
+                    } else{
+                        
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+
+                
                     } else{
                         this.$message.error(response.rspMsg);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+
+
+                 this.$axios
+                .get('/diagnosis/queryAll', {
+                    params: {
+                        start: this.query.pageIndex ,
+                        condition:this.name,
+                        size:1000000
+                    },
+                    headers: {
+                        token: localStorage.getItem('token'),
+                        'Content-Type': 'application/json;charset=utf-8' //头部信息
+                    }
+                })
+                .then((response) => {
+                    if (response.rspCode == '200') {
+                        this.tableDataAll = response.data.list;
+                        
+                    } else{
+                        
                     }
                 })
                 .catch(function (error) {

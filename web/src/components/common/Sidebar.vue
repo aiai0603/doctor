@@ -70,13 +70,8 @@ export default {
             items: [
                
                 {
-                    icon: 'el-icon-lx-home',
-                    index: 'index',
-                    title: '系统首页'
-                },
-                {
                     icon: 'el-icon-user',
-                   index: 'user',
+                    index: 'user',
                     title: '用户管理',
                     subs: [ 
                          
