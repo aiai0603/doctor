@@ -165,19 +165,25 @@ public class PrescriptionController {
     /**
      * 查看复诊配药的电子处方
      * @param consult
-     * @param doctor
      * @return
      */
     @GetMapping("showPrescription")
-    public ResponseData showPrecription(@RequestParam(value = "consult",defaultValue = "")Integer consult,
-                                        @RequestParam(value = "doctor",defaultValue = "")Integer doctor){
-        if(consult==null||doctor==null){
+    public ResponseData showPrecription(@RequestParam(value = "consult",defaultValue = "")Integer consult,@RequestParam(value="type",defaultValue = "")Integer person){
+        if(consult==null||person==null){
             return new ResponseData(ExceptionMsg.FAILED,"输入数据为空");
         }
         List list = new ArrayList();
         Double sum =0.0;
-
-            List<PrescriptionInfoEntity> prescriptionInfo = precriptionMapper.findByConsultDoctor(consult,doctor,"1");
+        try{
+            List<PrescriptionInfoEntity> prescriptionInfo = new ArrayList<>();
+            if(person==1){
+                prescriptionInfo = precriptionMapper.findByConsultDoctor(consult,"1");
+            }
+            else{
+                if(consultAskMapper.findByConsult(consult).getConsultStatus()==3){
+                    prescriptionInfo = precriptionMapper.findByConsultDoctor(consult,"1");
+                }
+            }
             for (int i=0;i<prescriptionInfo.size();i++){
                 Map<String,Object> map1 = new HashMap<>();
                 List<PrescriptionDrugEntity> prescriptionDrugList =
@@ -206,10 +212,9 @@ public class PrescriptionController {
                 list.add(map1);
             }
             return new ResponseData(ExceptionMsg.SUCCESS,list);
-
-
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
 
     }
-
-
 }

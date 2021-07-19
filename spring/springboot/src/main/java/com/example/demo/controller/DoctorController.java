@@ -62,11 +62,43 @@ public class DoctorController {
         return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
     }
 
+    /**
+     * 删除医生
+     * @param map1
+     * @return
+     */
     @PostMapping("deleteDoctor")
     public ResponseData deleteDoctor(@RequestBody Map<String,Object> map1){
-        int doctor = Integer.parseInt((String)map1.get("doctorId"));
-        doctorMapper.deleteDoctor(doctor);
-        return new ResponseData(ExceptionMsg.SUCCESS,"删除成功");
+        if(map1==null){
+            return new ResponseData(ExceptionMsg.FAILED,"传入数据为空");
+        }
+        try{
+            int doctor = (int) map1.get("doctorId");
+            doctorMapper.deleteDoctor(doctor);
+            return new ResponseData(ExceptionMsg.SUCCESS,"删除成功");
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+
+    }
+
+    /**
+     * 通过ID返回单个的医生信息
+     * @param doctorId
+     * @return
+     */
+    @GetMapping("findDoctor")
+    public ResponseData findById(@RequestParam("doctorId")Integer doctorId){
+        if(doctorId==null){
+            return new ResponseData(ExceptionMsg.FAILED,"传入数据为空");
+        }
+        try{
+            BaseDoctorEntity baseDoctorEntity ;
+            baseDoctorEntity = doctorMapper.findById(doctorId);
+            return new ResponseData(ExceptionMsg.SUCCESS,baseDoctorEntity);
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
     }
 
 }

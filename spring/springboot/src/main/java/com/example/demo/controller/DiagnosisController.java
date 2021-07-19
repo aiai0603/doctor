@@ -2,18 +2,17 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.BaseDiagnosisEntity;
 import com.example.demo.mapper.DiagnosisMapper;
+import com.example.demo.repository.DiagnosisRepository;
 import com.example.demo.result.ExceptionMsg;
 import com.example.demo.result.Response;
 import com.example.demo.result.ResponseData;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("diagnosis")
@@ -27,6 +26,8 @@ public class DiagnosisController {
 
     @Autowired
     DiagnosisMapper diagnosisMapper;
+    @Autowired
+    DiagnosisRepository diagnosisRepository;
 
     /**
      * 返回所有的疾病信息
@@ -46,6 +47,61 @@ public class DiagnosisController {
         }
         else {
             return new ResponseData(ExceptionMsg.NOMORE,"没有更多了");
+        }
+    }
+
+    /**
+     * 通过id返回单个疾病信息
+     * @param diagnosis
+     * @return
+     */
+    @GetMapping("findDiagnose")
+    public ResponseData findById(@RequestParam("diagnosis")Integer diagnosis){
+        if(diagnosis==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入为空");
+        }
+        try{
+            BaseDiagnosisEntity baseDiagnosisEntity;
+            baseDiagnosisEntity = diagnosisMapper.findById(diagnosis);
+            return new ResponseData(ExceptionMsg.SUCCESS,baseDiagnosisEntity);
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+    }
+
+    /**
+     * 添加/修改疾病信息
+     * @param baseDiagnosisEntity
+     * @return
+     */
+    @PostMapping("addDiagnosis")
+    public ResponseData addDiagnosis(@RequestBody BaseDiagnosisEntity baseDiagnosisEntity){
+        if(baseDiagnosisEntity==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入为空");
+        }
+        try{
+            diagnosisRepository.save(baseDiagnosisEntity);
+            return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+    }
+
+    /**
+     * 删除疾病
+     * @param map1
+     * @return
+     */
+    @PostMapping("deleteDiagnosis")
+    public ResponseData deleteDiagnosis(@RequestBody Map<String,Integer> map1){
+        if(map1==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入为空");
+        }
+        try{
+            diagnosisMapper.deleteById(map1.get("diagnosisId"));
+            return new ResponseData(ExceptionMsg.SUCCESS,"删除成功");
+        }catch(Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
         }
     }
 }

@@ -14,7 +14,7 @@ public interface DoctorMapper {
     List<BaseDoctorEntity> findAll();
 
     @Select("SELECT * FROM base_doctor WHERE doctor_id = #{doctor}")
-    BaseDoctorEntity findById();
+    BaseDoctorEntity findById(@Param("doctor")Integer doctor);
 
     @Select("SELECT * FROM base_doctor WHERE user_id = #{user}")
     BaseDoctorEntity findByUser(@Param("user")Integer user);
