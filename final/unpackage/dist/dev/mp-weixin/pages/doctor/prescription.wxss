@@ -71,8 +71,7 @@
 	margin: 30rpx 0;
 	width: 90%;
 	border-radius: 20rpx;
-	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
-	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	box-shadow: #cccccc 1rpx 1rpx 10rpx;
 }
 .logo {
 	display: -webkit-box;
@@ -116,8 +115,7 @@
 	margin-right: 20rpx;
 }
 .list {
-	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
-	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	width: 100%;
 	background-color: white;
 	display: -webkit-box;
@@ -259,8 +257,7 @@
 	height: 100rpx;
 	width: 100%;
 	background-color: white;
-	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
-	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	position: fixed;
 	bottom: 0;
 	display: -webkit-box;

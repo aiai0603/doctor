@@ -133,8 +133,7 @@
 	-webkit-align-items: center;
 	        align-items: center;
 	background-color: #F7f7f7;
-	-webkit-box-shadow: #cccccc 1rpx 1rpx 5rpx;
-	        box-shadow: #cccccc 1rpx 1rpx 5rpx;
+	box-shadow: #cccccc 1rpx 1rpx 5rpx;
 }
 .card {
 	display: -webkit-box;
@@ -185,7 +184,6 @@ page {
 	margin-top: 30rpx;
 	border-radius: 20rpx;
 	background-color: white;
-	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
-	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	box-shadow: #cccccc 1rpx 1rpx 10rpx;
 }
 

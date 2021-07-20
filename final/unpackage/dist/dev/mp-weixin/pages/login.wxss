@@ -92,8 +92,7 @@ page {
 	border-radius: 50rpx;
 	font-size: 30rpx;
 	height: 80rpx;
-	-webkit-box-shadow: #666666 3rpx 3rpx 10rpx;
-	        box-shadow: #666666 3rpx 3rpx 10rpx;
+	box-shadow: #666666 3rpx 3rpx 10rpx;
 }
 .but:active {
 	width: 80%;
@@ -115,8 +114,7 @@ page {
 	border-radius: 50rpx;
 	font-size: 30rpx;
 	height: 80rpx;
-	-webkit-box-shadow: #666666 3rpx 3rpx 5rpx;
-	        box-shadow: #666666 3rpx 3rpx 5rpx;
+	box-shadow: #666666 3rpx 3rpx 5rpx;
 }
 .icon {
 	width: 40rpx;

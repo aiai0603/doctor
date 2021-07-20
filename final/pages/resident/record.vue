@@ -19,11 +19,13 @@
 					</view>
 				</view>
 				<view class="record-bottom">
-					<view class="record-icon">
-						<image src="../../static/icons/record-icon.png"></image>
+					<view style="display: flex; flex-flow: row; align-items: center;">
+						<view class="record-icon">
+						    <image src="../../static/icons/record-icon.png" style="width: 35rpx; height: 35rpx;"></image>
+					    </view>
+					    <view style="margin-left: 20rpx; color: #818181;">复诊配药</view>
 					</view>
-					<view style="margin-left: 20rpx; color: #818181;">复诊配药</view>
-					<u-button size="mini" :custom-style="customStyle" v-if="recordList[index].consultStatus === 3" @click="choose(recordList[index].consultId)">查看处方</u-button>
+					<u-button size="mini" :custom-style="customStyle" v-if="recordList[index].consultStatus === 3" @click="choose(recordList[index].consultId)" style="margin-right: 30rpx;">查看处方</u-button>
 				</view>
 			</view>
 		</block>
@@ -142,6 +144,8 @@
 	
 	.record-bottom {
 		display: flex;
+		flex-flow: row;
+		justify-content: space-between;
 		align-items: center;
 		margin-top: 10rpx;
 		margin-left: 30rpx;
@@ -149,15 +153,10 @@
 		height: 20%;
 	}
 	
-	.record-bottom>.record-icon {
-		background: #cbcbcb;
+	.record-icon {
+		background-color: #cbcbcb;
 		width: 35rpx;
 		height: 35rpx;
-	}
-	
-	.record-bottom image {
-		width: 100%;
-		height: 100%;
 	}
 	
 	.question {

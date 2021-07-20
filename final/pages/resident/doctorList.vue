@@ -2,7 +2,7 @@
 	<view>
 		<view class="main">
 			<u-search placeholder="搜索医生" v-model="keyword" shape="shape" bg-color="#f7f8fa" action-text="取消"
-				@custom="search()" @change="change()"></u-search>
+				@custom="search()" @change="change()" style="width: 100%;"></u-search>
 		</view>
 		<view class="result">
 			搜索结果({{sum}}条)
@@ -154,15 +154,13 @@
 		flex-flow: row;
 		justify-content: center;
 		align-items: center;
+		width: 100%;
 		background-color: white;
 		padding: 25rpx 15rpx 15rpx;
 		box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	}
 	.tag {
-		margin-top: 10rpx;
 		margin-left: 15rpx; 
-		height: 45rpx;
-		width: 130rpx;
 	}
 	page {
 		background-color: #f1f5f6;

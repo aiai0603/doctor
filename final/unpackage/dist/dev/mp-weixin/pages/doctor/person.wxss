@@ -83,8 +83,7 @@
 	height: 100rpx;
 	width: 100%;
 	background-color: white;
-	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
-	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	position: fixed;
 	bottom: 0;
 	display: -webkit-box;
@@ -152,8 +151,7 @@ page {
 	font-weight: 600;
 }
 .up-item {
-	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
-	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	width: 100%;
 	background-color: white;
 	display: -webkit-box;
@@ -172,8 +170,7 @@ page {
 	margin-bottom: 30rpx;
 }
 .down-item {
-	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
-	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	width: 100%;
 	background-color: white;
 	display: -webkit-box;

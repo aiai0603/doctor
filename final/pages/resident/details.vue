@@ -4,9 +4,9 @@
 		<u-form :model="form" ref="uForm" label-width="200" :label-style="labelStyle">
 			<view class="doctor" :style="{ height: form.doctorId ? '200rpx': ''}">
 				<u-form-item label="诊断医生" prop="doctor" :required="true" :border-bottom="false" v-if="!form.doctor.name" style="width: 100%;">
-					<view style="color: #ccc; float: right; margin-right: 30rpx;">
+					<view style="color: #ccc; float: right; margin-right: 30rpx;" @click="chooseDoc()">
 						选择医生
-						<u-icon name="arrow-right" @click="chooseDoc()"></u-icon>
+						<u-icon name="arrow-right"></u-icon>
 					</view>
 			    </u-form-item>
 				<view class="doctor-info" v-else>
@@ -20,9 +20,9 @@
 							<view style="margin-top: 30rpx;">{{ form.doctor.dept }}</view>
 						</view>
 					</view>
-					<view style="color: #ccc; float: right;">
+					<view style="color: #ccc; float: right;" @click="chooseDoc()">
 						更换医生
-						<u-icon name="arrow-right" @click="chooseDoc()"></u-icon>
+						<u-icon name="arrow-right"></u-icon>
 					</view>
 				</view>
 			</view>
@@ -38,11 +38,11 @@
 				<view v-show="form.patientInfo.name" style="margin-right: 30rpx; color: #000;" slot="right" @click="showInfo = true;">{{ form.patientInfo.name }}&nbsp;{{ form.patientInfo.sex }}&nbsp;{{ form.patientInfo.age }}</view>
 			</u-form-item>
 			<u-form-item label="确诊诊断" prop="diagnosis" :required="true">
-				<view style="margin-right: 30rpx;" slot="right" v-if="!form.diagnosis" @click="chooseDi()">
+				<view style="margin-right: 30rpx;" slot="right" v-show="!form.diagnosis" @click="chooseDi()">
 					选择诊断
 					<u-icon name="arrow-right"></u-icon>
 				</view>
-				<view v-else style="margin-right: 30rpx; color: #000;" slot="right" @click="chooseDi()">{{ form.diagnosis }}</view>
+				<view v-show="form.diagnosis" style="margin-right: 30rpx; color: #000;" slot="right" @click="chooseDi()">{{ form.diagnosis }}</view>
 			</u-form-item>
 			<u-form-item label="所需药品" prop="drug" :border-bottom="false" :required="true">
 				<view style="margin-right: 30rpx;" slot="right" @click="addMedicine()">
@@ -64,7 +64,7 @@
 			</view>
 			<view style="width: 100%; display: flex; justify-content: center; flex-direction: row;">
 				<view style="width: 90%; margin-top: 20rpx;">
-					<u-input type="textarea" :autoHeight="true" :clearable="false" v-model="form.value" placeholder="请准确描述病情,以便医生更好判断(不少于5个字)"></u-input>
+					<u-input type="textarea" :autoHeight="true" :clearable="false" v-model="form.value" :placeholder="placeholder" ></u-input>
 				</view>
 			</view>
 			
@@ -90,10 +90,10 @@
 		<u-button type="primary" style="height: 100rpx;" @click="saveImg()" v-else>保存图片</u-button>
 		
 		<!--信息弹出层-->
-		<u-popup v-model="showInfo" mode="center" width="90%" height="65%" border-radius="20" :closeable="true">
+		<u-popup v-model="showInfo" mode="center" width="90%" height="60%" border-radius="20" :closeable="true" @open="open" @close="close">
 			<view class="infoForm">
-				<h3 style="margin: 30rpx 0;">填写信息</h3>
-				<u-form :model="popupform" ref="infoFrom" label-align="left" label-width="200" :label-style="labelStyle">
+				<text style="margin: 30rpx 0; font-weight: 700; font-size: 35rpx;">填写信息</text>
+				<u-form :model="popupform" ref="infoFrom" label-align="left" label-width="180" :label-style="labelStyle">
 					<u-form-item label="姓名" :required="true" :border-bottom="false">
 						<u-input v-model="popupform.name" :border="true" class="form-item" :clearable="false" placeholder="请填写姓名"></u-input>
 					</u-form-item>
@@ -134,6 +134,7 @@
 				showInfo: false,
 				showSex: false,
 				showBirthday: false,
+				placeholder: '请准确描述病情,以便医生更好判断(不少于5个字)',
 				labelStyle: {
 					fontSize: '30rpx',
 					marginLeft: '40rpx'
@@ -147,7 +148,7 @@
 						dept: ''
 					},
 					patientInfo: {
-						name: null,
+						name: '',
 						number: '',
 						sex: '',
 						age: '',
@@ -168,12 +169,18 @@
 				},
 				text: '  请上传病情照片、化验单、检查资料、报告单、药品处方单,若为皮肤问题,建议对准患处拍摄。照片仅自己和医生可见',
 				selectorSex: ['男', '女'],
-				action: 'http://192.168.43.70:8088/api/upload',
+				action: 'http://47.97.158.11:8088/api/upload',
 				photos: '',
 				ageInt: 0
 			}
 		},
 		methods: {
+			open () {
+				this.placeholder = ''
+			},
+			close () {
+				this.placeholder = '请准确描述病情,以便医生更好判断(不少于5个字)'
+			},
 			confirmSex (index) {
 				this.popupform.sex = this.selectorSex[index]
 			},
@@ -398,15 +405,8 @@
 		height: 100%;
 	}
 	
-	.form-item {
-		margin-left: 20rpx;
-	}
-	
 	.tag {
-		margin-top: 10rpx;
 		margin-left: 15rpx; 
-		height: 45rpx;
-		width: 130rpx;
 	}
 
 	

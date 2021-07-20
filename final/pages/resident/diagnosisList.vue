@@ -2,7 +2,7 @@
 	<view>
 		<view class="main">
 			<u-search placeholder="搜索诊断" v-model="keyword" shape="shape" bg-color="#f7f8fa" action-text="取消"
-				@custom="search()" @change="change()"></u-search>
+				@custom="search()" @change="change()" style="width: 100%;"></u-search>
 		</view>
 		<view class="result">
 			搜索结果({{sum}}条)
@@ -62,7 +62,8 @@
 					url: '/diagnosis/queryAll', //仅为示例，并非真实接口地址。
 					data: {
 						start: this.start,
-						condition: this.keyword
+						condition: this.keyword,
+						size: 11
 					}
 				}).
 				then(res => {
@@ -146,6 +147,7 @@
 		flex-flow: row;
 		justify-content: center;
 		align-items: center;
+		width: 100%;
 		background-color: white;
 		padding: 25rpx 15rpx 15rpx;
 		box-shadow: #cccccc 1rpx 1rpx 10rpx;
