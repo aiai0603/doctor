@@ -4,9 +4,11 @@ page {
 	width: 100%;
 }
 .in:active{
+	background: -webkit-gradient(linear, left top, left bottom, from(#87e2f4), to(#65a3ef));
 	background: -webkit-linear-gradient(#87e2f4, #65a3ef);
 	background: linear-gradient(#87e2f4, #65a3ef);
-	box-shadow: #666666 3rpx 3rpx 5rpx;
+	-webkit-box-shadow: #666666 3rpx 3rpx 5rpx;
+	        box-shadow: #666666 3rpx 3rpx 5rpx;
 }
 .in {
 	width: 70%;
@@ -24,13 +26,15 @@ page {
 	-webkit-align-items: center;
 	        align-items: center;
 	color: white;
+	background: -webkit-gradient(linear, left top, left bottom, from(#8debff), to(#6cacff));
 	background: -webkit-linear-gradient(#8debff, #6cacff);
 	background: linear-gradient(#8debff, #6cacff);
 	border-radius: 50rpx;
 	font-size: 50rpx;
 	height: 120rpx;
 	margin-bottom: 100rpx;
-	box-shadow: #666666 3rpx 3rpx 10rpx;
+	-webkit-box-shadow: #666666 3rpx 3rpx 10rpx;
+	        box-shadow: #666666 3rpx 3rpx 10rpx;
 }
 .bubble {
 	position: relative;

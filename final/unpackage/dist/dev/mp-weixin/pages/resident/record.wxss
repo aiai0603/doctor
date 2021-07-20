@@ -3,7 +3,8 @@
 	background: #fff;
 	height: 400rpx;
 	width: 100%;
-	box-shadow: #ccc 1rpx 1rpx 1rpx;
+	-webkit-box-shadow: #ccc 1rpx 1rpx 1rpx;
+	        box-shadow: #ccc 1rpx 1rpx 1rpx;
 }
 .record-info {
 	display: -webkit-box;
