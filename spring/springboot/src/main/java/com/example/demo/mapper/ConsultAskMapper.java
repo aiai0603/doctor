@@ -20,6 +20,9 @@ public interface ConsultAskMapper {
    @Update("UPDATE consult_ask SET finish_time = #{finish} , consult_status = 3 WHERE consult_id = #{consult}")
     void finishConsult(@Param("finish")Timestamp time,@Param("consult") Integer consult);
 
-   @Select("SELECT * FROM consult_ask WHERE create_user_id = #{user}")
-    List<ConsultAskEntity> findByUser(@Param("user")Integer user );
+    @Update("UPDATE consult_ask SET finish_time = null , consult_status = 2 WHERE consult_id = #{consult}")
+    void rejectConsult(@Param("consult") Integer consult);
+
+   @Select("SELECT * FROM consult_ask WHERE create_user_id = #{user} AND consult_status = #{type}")
+    List<ConsultAskEntity> findByUser(@Param("user")Integer user,@Param("type") Integer type );
 }

@@ -19,4 +19,7 @@ public interface DiagnosisMapper {
 
     @Delete("DELETE FROM base_diagnosis WHERE diagnosis_id = #{diagnosis}")
     void deleteById(@Param("diagnosis")Integer diagnosis);
+
+    @Select("SELECT * FROM base_diagnosis WHERE diseases_id = #{diseases}")
+    BaseDiagnosisEntity findByDiseases(@Param("diseases")Integer diseases);
 }

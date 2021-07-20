@@ -2,9 +2,7 @@ package com.example.demo.mapper;
 
 import com.example.demo.entity.BaseAccoutEntity;
 import com.example.demo.entity.BaseDicDrugUsageEntity;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -15,8 +13,20 @@ public interface AccoutMapper {
    @Select("SELECT * FROM base_accout WHERE mini_open_id = #{openid}")
     BaseAccoutEntity findByOpen(@Param("openid") String openid);
 
+    @Select("SELECT * FROM base_accout WHERE user_id = #{user}")
+    BaseAccoutEntity findByUser(@Param("user") Integer user);
+
    @Select("SELECT * FROM base_dic_drug_usage")
     List<BaseDicDrugUsageEntity> findUsage();
+
+   @Select("SELECT * FROM base_accout WHERE phone_no LIKE '%${value}%' AND user_type = '1'")
+    List<BaseAccoutEntity> findAll(String search);
+
+   @Delete("DELETE FROM base_accout WHERE user_id = #{user}")
+    void deleteDoctor(@Param("user")Integer user);
+
+   @Update("UPDATE base_accout SET phone_no = #{phone} WHERE user_id = #{user}")
+    void updateAccout(@Param("phone")String phone,@Param("user")Integer user);
     // 以下为模板
 //    @Select("SELECT * FROM student WHERE id = #{id}")
 //    Student findById(@Param("id") long id);

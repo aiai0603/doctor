@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +51,8 @@ public class ConsultAskController {
      * @return
      */
     @GetMapping("findAll")
-    public ResponseData findAll(@RequestParam("type") Integer type,@RequestParam("doctorId") String doctorId,@RequestParam(value = "start", defaultValue = "0") Integer start){
-        PageHelper.startPage(start,4,"create_time asc");
+    public ResponseData findAll(@RequestParam("type") Integer type,@RequestParam("doctorId") String doctorId,@RequestParam(value = "start", defaultValue = "0") Integer start,@RequestParam(value = "size",defaultValue = "4") Integer size){
+        PageHelper.startPage(start,size,"create_time asc");
         List<ConsultAskEntity> list = consultAskMapper.findAll(doctorId,type);
         PageInfo<ConsultAskEntity> page =new PageInfo<>(list);
         if(start<=page.getPages()){
@@ -85,28 +84,33 @@ public class ConsultAskController {
      */
     @PostMapping("add")
     public ResponseData addConsult(@RequestBody ConsultAskEntity consultAskEntity){
-        Timestamp d = new Timestamp(System.currentTimeMillis());
-       consultAskEntity.setCreateTime(d);
-       consultAskEntity.setAcceptTime(d);
-       consultAskEntity.setFinishTime(null);
-       consultAskRepository.save(consultAskEntity);
-       System.out.println(consultAskEntity);
-       return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
-    }
-
-    /**
-     * 添加图片
-     * @param map1
-     * @return
-     */
-    @PostMapping("addPhoto")
-    public ResponseData addPhoto(@RequestBody Map<String,Object> map1){
+        if(consultAskEntity==null){
+            return new ResponseData(ExceptionMsg.FAILED,"数据为空");
+        }
         try{
-            return new ResponseData(ExceptionMsg.SUCCESS,"图片添加成功");
+            Timestamp d = new Timestamp(System.currentTimeMillis());
+            consultAskEntity.setCreateTime(d);
+            consultAskEntity.setAcceptTime(d);
+            consultAskEntity.setFinishTime(null);
+            consultAskRepository.save(consultAskEntity);
+            goEasy.publish("d"+consultAskEntity.getDoctorId(), consultAskEntity.getDoctorName()+",您有新的复诊配药申请，请及时处理",new PublishListener(){
+                @Override
+                public void onSuccess() {
+                    System.out.println("Publish success.");
+                }
+
+                @Override
+                public void onFailed(GoEasyError error) {
+                    System.out.println("Failed to Publish message, error:" + error.getCode() + " , " + error.getContent());
+                }
+            });
+            return new ResponseData(ExceptionMsg.SUCCESS,"添加成功");
         }catch (Exception e){
             return new ResponseData(ExceptionMsg.FAILED,"出现异常");
         }
+
     }
+
     /**
      * 完成复诊配药
      * @param map1
@@ -124,7 +128,7 @@ public class ConsultAskController {
             ConsultAskEntity consultAskEntity = consultAskMapper.findByConsult(consult);
             if(list.size()!=0){
                 consultAskMapper.finishConsult(new Timestamp(time.getTime()),consult);
-                goEasy.publish(String.valueOf(consultAskEntity.getDoctorId()), consultAskEntity.getPersonName()+","+consultAskEntity.getDoctorName()+"医生已为您开具新处方，请及时查看",new PublishListener(){
+                goEasy.publish("u"+consultAskEntity.getCreateUserId(), consultAskEntity.getPersonName()+","+consultAskEntity.getDoctorName()+"医生已为您开具新处方，请及时查看",new PublishListener(){
                     @Override
                     public void onSuccess() {
                         System.out.println("Publish success.");
@@ -151,17 +155,37 @@ public class ConsultAskController {
      * @return
      */
     @GetMapping("showConsult")
-    public ResponseData findConsultByUser(@RequestParam(value = "userId",defaultValue = "")Integer user){
+    public ResponseData findConsultByUser(@RequestParam(value = "userId",defaultValue = "")Integer user,@RequestParam(value = "start",defaultValue = "")Integer start,@RequestParam(value = "size",defaultValue = "10")Integer size,@RequestParam(value = "type",defaultValue = "")Integer type){
         if(user==null){
             return new ResponseData(ExceptionMsg.FAILED,"输入数据为空");
         }
         try {
-           SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-           List<ConsultAskEntity> list =   consultAskMapper.findByUser(user);
-            return new ResponseData(ExceptionMsg.SUCCESS,list);
+           PageHelper.startPage(start,size,"create_time asc");
+           //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+           List<ConsultAskEntity> list =   consultAskMapper.findByUser(user,type);
+            PageInfo<ConsultAskEntity> page =new PageInfo<>(list);
+            return new ResponseData(ExceptionMsg.SUCCESS,page);
         }catch (Exception e){
             return new ResponseData(ExceptionMsg.FAILED,"出现异常");
         }
     }
 
+    /**
+     * 驳回医已完成的复诊配药
+     * @param map1
+     * @return
+     */
+    @PostMapping("rejectConsult")
+    public ResponseData rejectConsult(@RequestBody Map<String,Integer> map1){
+        if(map1==null){
+            return new ResponseData(ExceptionMsg.FAILED,"输入为空");
+        }
+        try{
+            int consult = map1.get("consult");
+            consultAskMapper.rejectConsult(consult);
+            return new ResponseData(ExceptionMsg.SUCCESS,"修改成功");
+        }catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+        }
+    }
 }
