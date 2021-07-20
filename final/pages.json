@@ -138,6 +138,8 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "电子处方",
+				"navigationBarBackgroundColor":"#1ab394",
+				"navigationBarTextStyle":"white",
                 "enablePullDownRefresh": false
             }
             
