@@ -1,91 +1,31 @@
 {
 	"easycom": {
-		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [
+		{
+		    "path" : "pages/cache",
+		    "style" :                                                                                    
+		    {
+				"navigationBarTitleText": "网上医生",
+				"enablePullDownRefresh": false,
+		        "app-plus": {
+		        	"titleNView": false
+		        }
+		    }
+		    
+		},
 		{
 		    "path" : "pages/enter",
 		    "style" :                                                                                    
 		    {
-		        "app-plus": {
-					"titleNView": false
-				}
+		       "navigationBarTitleText": "网上医生",
+		       "navigationBarBackgroundColor":"#0a88df",
+		       "navigationBarTextStyle":"white",
+		       "enablePullDownRefresh": false
 		    } 
 		}
-		,{
-		    "path": "pages/index/index",
-		    "style": {
-			    "navigationStyle": "custom" ,
-			    "navigationBarTextStyle": "white"
-		    }
-	    }    
-	   ,{
-            "path" : "pages/record/record",
-            "style" :                                                                                    
-            {
-				"navigationStyle": "custom" ,
-				"navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/details/details",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom" ,
-                "navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/medicine/medicine",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/doctorList/doctorList",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/diagnosis/diagnosis",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/recipel/recipel",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom" ,
-                "navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "test/test",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom" ,
-                "navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+       
         ,{
             "path" : "pages/login",
             "style" :                                                                                    
@@ -169,6 +109,73 @@
             {
                 "navigationBarTitleText": "选择诊断",
                 "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/resident/recipel",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "电子处方",
+                "navigationBarBackgroundColor":"#21bd64",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+       
+        ,{
+            "path" : "pages/doctor/check",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "电子处方",
+				"navigationBarBackgroundColor":"#1ab394",
+				"navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/med",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "新增药品",
+                "navigationBarBackgroundColor":"#098ade",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/method",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "药品设置",
+                "navigationBarBackgroundColor":"#098ade",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/person",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "患者详情",
+                "navigationBarBackgroundColor":"#098ade",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/prescription",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "处方",
+                "navigationBarBackgroundColor":"#098ade",
                 "navigationBarTextStyle":"white",
                 "enablePullDownRefresh": false
             }

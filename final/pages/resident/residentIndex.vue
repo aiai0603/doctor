@@ -24,6 +24,13 @@
 
 			}
 		},
+		onShow: function() {
+			
+			if (wx.canIUse('hideHomeButton')) {
+			  wx.hideHomeButton()
+			}
+		
+		},
 		methods: {
 			goDetails () {
 				uni.navigateTo({

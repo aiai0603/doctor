@@ -1,4 +1,4 @@
-const baseUrl = "http://10.67.128.25:8088";//这里放置url域名
+const baseUrl = "http://10.67.129.67:8088";//这里放置url域名
 export function request(options){//封装的requset
 	let { url,data,method,headers } = options;
 	data = data || {},

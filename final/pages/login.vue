@@ -6,8 +6,11 @@
 				测试医院
 			</view>
 		</view>
-		<view type="default" @click="login()" class="but" v-show="!flag">
+		<button class="but" v-show="!flag" open-type="getUserInfo" lang="zh_CN" @getuserinfo="login">
 			<image src="../static/imgs/wechat.png" mode="" class="icon"></image>微信快捷登录
+		</button>
+		<view type="default">
+
 		</view>
 
 		<view class="phone" v-show="flag">
@@ -26,7 +29,10 @@
 </template>
 
 <script>
-	import { request, showToast } from "../api/request.js"
+	import {
+		request,
+		showToast
+	} from "../api/request.js"
 	export default {
 		data() {
 			return {
@@ -35,7 +41,7 @@
 				photo: ''
 			}
 		},
-		onLoad (option) {
+		onLoad(option) {
 			this.type = option.type
 		},
 		methods: {
@@ -49,190 +55,376 @@
 					return;
 				}
 				let that = this;
-				if (that.type == 0) {
-					uni.login({
-						provider: 'weixin',
-						success: function(loginRes) {
-							request({
-								method: "POST",
-								url: '/accout/addUser', //仅为示例，并非真实接口地址。
-								data: {
-									openId: loginRes.authResult.openid,
-									phone: that.photo
-								}
-							}).
-							then(res => {
-								if (res.data.rspCode == 200) {
-									try {
-										uni.setStorageSync('userId', res.data.data);
-									} catch (e) {
-										// error
+				// #ifdef MP-WEIXIN
+				uni.getProvider({
+					service: 'oauth',
+					success: function(res) {
+						if (~res.provider.indexOf('weixin')) {
+							uni.login({
+								provider: 'weixin',
+								success: (res2) => {
+									if (that.type == 1) {
+
+										request({
+											method: "POST",
+											url: '/accout/saveOpen',
+											data: {
+												openId: res2.code,
+												phone: that.photo
+											}
+										}).
+										then(res => {
+
+
+											if (res
+												.data
+												.rspCode ==
+												200
+											) {
+
+												try {
+													uni.setStorageSync(
+														'doctorId',
+														res
+														.data
+														.data
+													);
+												} catch (
+													e
+												) {
+													// error
+												}
+												that.sub();
+												uni.reLaunch({
+													url: 'doctor/doctorIndex'
+
+												})
+											} else if (
+												res
+												.data
+												.rspCode ==
+												999
+											) {
+												that.flag =
+													1;
+												uni.showToast({
+													icon: 'none',
+													title: '请注册账号',
+													duration: 2000
+												});
+											} else {
+												uni.showToast({
+													icon: 'none',
+													title: res
+														.data
+														.data ?
+														res
+														.data
+														.data : '网络异常',
+													duration: 2000
+												});
+											}
+
+
+
+										});
+									} else if (that.type == 0) {
+
+
+										request({
+											method: "POST",
+											url: '/accout/addUser', //仅为示例，并非真实接口地址。
+											data: {
+												openId: res2.code,
+												phone: that.photo
+											}
+										}).
+										then(res => {
+												if (res
+													.data
+													.rspCode ==
+													200
+												) {
+													console
+														.log(
+															res
+															.data
+															.data
+														)
+													try {
+														uni.setStorageSync(
+															'userId',
+															res
+															.data
+															.data
+														);
+													} catch (
+														e
+													) {
+														// error
+													}
+													that.sub();
+													uni.reLaunch({
+														url: 'resident/residentIndex'
+													})
+												} else if (
+													res
+													.data
+													.rspCode ==
+													999
+												) {
+													that.flag =
+														1;
+													uni.showToast({
+														icon: 'none',
+														title: '找不到账号',
+														duration: 2000
+													});
+												} else {
+													uni.showToast({
+														icon: 'none',
+														title: res
+															.data
+															.data ?
+															res
+															.data
+															.data : '网络异常',
+														duration: 2000
+													});
+												}
+
+
+											},
+
+
+
+
+
+
+
+										)
+
 									}
-									uni.reLaunch({
-										url: 'resident/residentIndex'
-									})
-								} else {
-									uni.showToast({
-										icon: 'none',
-										title: res.data.data ? res.data.data : '网络异常',
-										duration: 2000
-									});
 								}
 							})
-						},
-						fail: function(e) {
-							uni.showToast({
-								icon: 'none',
-								title: '授权失败',
-								duration: 2000
-							});
+
 						}
-					});
-				} else if (that.type == 1) {
-					uni.login({
-						provider: 'weixin',
-						success: function(loginRes) {
-							request({
-								method: "POST",
-								url: '/accout/saveOpen', //仅为示例，并非真实接口地址。
-								data: {
-									openId: loginRes.authResult.openid,
-									phone: that.photo
-								}
-							}).
-							then(res => {
-								if (res.data.rspCode == 200) {
-									console.log(res.data.data)
-									try {
-										uni.setStorageSync('doctorId', res.data.data);
-									} catch (e) {
-										// error
+					}
+				});
+
+				//#endif
+
+			},
+
+
+
+			sub() {
+				var pubsub = this.goeasy.pubsub;
+				var channel = null;
+				if (uni.getStorageSync('doctorId') != undefined && uni.getStorageSync('doctorId') != '') {
+					channel = 'd' + uni.getStorageSync('doctorId')
+				} else if (uni.getStorageSync('userId') != undefined && uni.getStorageSync('userId') != '') {
+					channel = 'u' + uni.getStorageSync('userId')
+				}
+				if (channel != null) {
+					pubsub.subscribe({
+						channel: channel,
+						onMessage: function(message) {
+							uni.showModal({
+								title: '提示',
+								content: message.content,
+								success: function(res) {
+									if (res.confirm) {
+										if (channel.charAt(0) == 'd') {
+											uni.reLaunch({
+												url: './doctorIndex',
+											
+											})
+										} else {
+											uni.navigateTo({
+												url: './record'
+											})
+										}
+
+									} else if (res.cancel) {
+
 									}
-									uni.reLaunch({
-										url: '../index/index'
-									})
-								} else {
-									uni.showToast({
-										icon: 'none',
-										title: res.data.data ? res.data.data : '网络异常',
-										duration: 2000
-									});
 								}
-							})
-						},
-						fail: function(e) {
-							uni.showToast({
-								icon: 'none',
-								title: '授权失败',
-								duration: 2000
 							});
+
+						},
+						onSuccess: function() {
+							console.log("Subscribe successfully.")
+						},
+						onFailed: function() {
+							console.log("Subscribe successfully.")
 						}
+
 					});
 				}
-				
+
 			},
 
 			login() {
-				/*uni.setStorageSync('doctorId', 1);
-				uni.reLaunch({
-					url: '../index/index'
-				})*/
-				let that = this;
-				if(that.type == 0) {
-					uni.login({
-						provider: 'weixin',
-						success: function(loginRes) {
-							request({
-								method: "GET",
-								url: '/accout/loginUser', //仅为示例，并非真实接口地址。
-								data: {
-									openId: loginRes.authResult.openid
-								}
-							}).
-							then(res => {
-								console.log(res)
-								if (res.data.rspCode == 200) {
-									console.log(res.data.data)
-									try {
-										uni.setStorageSync('userId', res.data.data);
-									} catch (e) {
-										// error
+				var that = this
+				// #ifdef MP-WEIXIN
+				uni.getProvider({
+					service: 'oauth',
+					success: function(res) {
+						if (~res.provider.indexOf('weixin')) {
+							uni.login({
+								provider: 'weixin',
+								success: (res2) => {
+									if (that.type == 0) {
+
+										request({
+											method: "GET",
+											url: '/accout/loginUser',
+											data: {
+												openId: res2.code
+											}
+										}).
+										then(res => {
+
+											if (res
+												.data
+												.rspCode ==
+												200
+											) {
+
+												try {
+													uni.setStorageSync(
+														'userId',
+														res
+														.data
+														.data
+													);
+												} catch (
+													e
+												) {
+													// error
+												}
+												that.sub();
+												uni.reLaunch({
+													url: 'resident/residentIndex'
+												})
+											} else if (
+												res
+												.data
+												.rspCode ==
+												999
+											) {
+												that.flag =
+													1;
+												uni.showToast({
+													icon: 'none',
+													title: '请注册账号',
+													duration: 2000
+												});
+											} else {
+												uni.showToast({
+													icon: 'none',
+													title: res
+														.data
+														.data ?
+														res
+														.data
+														.data : '网络异常',
+													duration: 2000
+												});
+											}
+
+
+
+										});
+									} else if (that.type == 1) {
+
+
+										request({
+											method: "GET",
+											url: '/accout/login', //仅为示例，并非真实接口地址。
+											data: {
+												openId: res2.code
+											}
+										}).
+										then(res => {
+												if (res
+													.data
+													.rspCode ==
+													200
+												) {
+													console
+														.log(
+															res
+															.data
+															.data
+														)
+													try {
+														uni.setStorageSync(
+															'doctorId',
+															res
+															.data
+															.data
+														);
+													} catch (
+														e
+													) {
+														// error
+													}
+													that.sub();
+													uni.reLaunch({
+														url: 'doctor/doctorIndex'
+													})
+												} else if (
+													res
+													.data
+													.rspCode ==
+													999
+												) {
+													that.flag =
+														1;
+													uni.showToast({
+														icon: 'none',
+														title: '请激活账号',
+														duration: 2000
+													});
+												} else {
+													uni.showToast({
+														icon: 'none',
+														title: res
+															.data
+															.data ?
+															res
+															.data
+															.data : '网络异常',
+														duration: 2000
+													});
+												}
+
+
+											},
+
+
+
+
+
+
+
+										)
+
 									}
-									uni.reLaunch({
-										url: 'resident/residentIndex'
-									})
-								} else if (res.data.rspCode == 999) {
-									that.flag = 1;
-									uni.showToast({
-										icon: 'none',
-										title: '请注册账号',
-										duration: 2000
-									});
-								} else {
-									uni.showToast({
-										icon: 'none',
-										title: res.data.data ? res.data.data : '网络异常',
-										duration: 2000
-									});
 								}
 							})
-						},
-						fail: function(e) {
-							uni.showToast({
-								icon: 'none',
-								title: '授权失败',
-								duration: 2000
-							});
+
 						}
-					});
-				} else if (that.type == 1) {
-					uni.login({
-						provider: 'weixin',
-						success: function(loginRes) {
-							request({
-								method: "GET",
-								url: '/accout/login', //仅为示例，并非真实接口地址。
-								data: {
-									openId: loginRes.authResult.openid
-								}
-							}).
-							then(res => {
-								if (res.data.rspCode == 200) {
-									console.log(res.data.data)
-									try {
-										uni.setStorageSync('doctorId', res.data.data);
-									} catch (e) {
-										// error
-									}
-									uni.reLaunch({
-										url: '../index/index'
-									})
-								} else if (res.data.rspCode == 999) {
-									that.flag = 1;
-									uni.showToast({
-										icon: 'none',
-										title: '请激活账号',
-										duration: 2000
-									});
-								} else {
-									uni.showToast({
-										icon: 'none',
-										title: res.data.data ? res.data.data : '网络异常',
-										duration: 2000
-									});
-								}
-							})
-						},
-						fail: function(e) {
-							uni.showToast({
-								icon: 'none',
-								title: '授权失败',
-								duration: 2000
-							});
-						}
-					});
-				}
-				
+					}
+				});
+
+				//#endif
+
+
+
+
 			}
 		}
 	}

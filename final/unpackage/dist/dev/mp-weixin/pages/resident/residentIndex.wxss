@@ -1,0 +1,27 @@
+
+.index {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-flow: column;
+	        flex-flow: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.item {
+	margin-top: 30%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-flow: column;
+	        flex-flow: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+

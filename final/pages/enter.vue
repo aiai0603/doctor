@@ -15,6 +15,13 @@
 			return {
 			}
 		},
+		onShow: function() {
+			
+			if (wx.canIUse('hideHomeButton')) {
+			  wx.hideHomeButton()
+			}
+		
+		},
 		
 		methods: {
 			residentEnter () {
@@ -84,7 +91,7 @@
 	.main {
 		height: 100%;
 		width: 100%;
-		background: url(../static/imgs/background.png);
+		background: url("http://qwd5e3z6e.hd-bkt.clouddn.com/2.png");
 		background-size: 100% 100%;
 		display: flex;
 		flex-flow: column;

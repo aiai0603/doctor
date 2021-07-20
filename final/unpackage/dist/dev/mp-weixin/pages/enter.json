@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "网上医生",
+  "navigationBarBackgroundColor": "#0a88df",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": false,
+  "usingComponents": {}
+}
