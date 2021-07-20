@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.BaseAccoutEntity;
 import com.example.demo.mapper.AccoutMapper;
 import com.example.demo.mapper.DoctorMapper;
@@ -11,9 +12,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +35,10 @@ public class AccoutController {
    private AccountRepository accountRepository;
    @Autowired
    private DoctorMapper doctorMapper;
-
+   @Autowired
+   private RestTemplate restTemplate;//在util中有配置
+   private String url = "https://api.weixin.qq.com/sns/jscode2session?appid={appid}&secret={secret}&js_code={code}&grant_type=authorization_code";
+   private Map<String, String> paramMap = new HashMap<>();
    /**
     * 通过openid授权登录医生
     * @param openId
@@ -45,14 +51,21 @@ public class AccoutController {
       }
       else{
          try{
-            if(accoutMapper.findByOpen(openId)!=null){
-               System.out.println(doctorMapper.findByUser(accoutMapper.findByOpen(openId).getUserId()));
-               if(doctorMapper.findByUser(accoutMapper.findByOpen(openId).getUserId())!=null){
-                  int doctor = doctorMapper.findByUser(accoutMapper.findByOpen(openId).getUserId()).getDoctorId();
+            paramMap.put("appid", "wxa02c207b24400c62");
+            paramMap.put("secret", "44cf2d74e8767448b22d3563fd38f864");
+            paramMap.put("code", openId);
+            String result = this.restTemplate.getForObject(url, String.class, paramMap);
+            JSONObject jsonObj  = (JSONObject) JSONObject.parse(result);
+            String open = (String) jsonObj.get("openid");
+            System.out.println(open);
+            if(accoutMapper.findByOpen(open)!=null){
+               System.out.println(open);
+               if(doctorMapper.findByUser(accoutMapper.findByOpen(open).getUserId())!=null){
+                  int doctor = doctorMapper.findByUser(accoutMapper.findByOpen(open).getUserId()).getDoctorId();
                   return new ResponseData(ExceptionMsg.SUCCESS,doctor);
                }
                else{
-                  return new ResponseData(ExceptionMsg.FAILED,"你不是医生");
+                  return new ResponseData(ExceptionMsg.TYPEWRONG,"你不是医生");
                }
             }
             else{
@@ -83,16 +96,22 @@ public class AccoutController {
             return new ResponseData(ExceptionMsg.FAILED,"openId为空");
          }
          if (baseAccoutEntity!=null){
-            baseAccoutEntity.setMiniOpenId(open);
+            paramMap.put("appid", "wxa02c207b24400c62");
+            paramMap.put("secret", "44cf2d74e8767448b22d3563fd38f864");
+            paramMap.put("code", open);
+            String result = this.restTemplate.getForObject(url, String.class, paramMap);
+            JSONObject jsonObj  = (JSONObject) JSONObject.parse(result);
+            baseAccoutEntity.setMiniOpenId((String) jsonObj.get("openid"));
             accountRepository.save(baseAccoutEntity);
-            int doctor = doctorMapper.findByUser(accoutMapper.findByOpen(open).getUserId()).getDoctorId();
+            int doctor = doctorMapper.findByUser(accoutMapper.findByOpen((String) jsonObj.get("openid")).getUserId()).getDoctorId();
             return new ResponseData(ExceptionMsg.SUCCESS,doctor);
          }
          else{
             return new ResponseData(ExceptionMsg.FAILED,"未找到对应号码");
          }
       }catch (Exception e){
-         return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+         throw e;
+         //return new ResponseData(ExceptionMsg.FAILED,"出现异常");
       }
 
    }
@@ -139,9 +158,15 @@ public class AccoutController {
             baseAccoutEntity.setUserType("1");
             baseAccoutEntity.setCreateTime(new Timestamp(time.getTime()));
             baseAccoutEntity.setPhoneNo(map1.get("phone"));
-            baseAccoutEntity.setMiniOpenId(map1.get("openId"));
+            paramMap.put("appid", "wxa02c207b24400c62");
+            paramMap.put("secret", "44cf2d74e8767448b22d3563fd38f864");
+            paramMap.put("code", map1.get("openId"));
+            String result = this.restTemplate.getForObject(url, String.class, paramMap);
+            JSONObject jsonObj  = (JSONObject) JSONObject.parse(result);
+            baseAccoutEntity.setMiniOpenId((String) jsonObj.get("openid"));
             accountRepository.save(baseAccoutEntity);
-            int id = accoutMapper.findByOpen(map1.get("openId")).getUserId();
+            int id = accoutMapper.findByOpen((String) jsonObj.get("openid")).getUserId();
+            System.out.println("注册成功");
             return new ResponseData(ExceptionMsg.SUCCESS,id);
          }
          else{
@@ -163,9 +188,22 @@ public class AccoutController {
          return new ResponseData(ExceptionMsg.FAILED,"openId为空");
       }
       else{
-         if(accoutMapper.findByOpen(openId)!=null){
-            int user = accoutMapper.findByOpen(openId).getUserId();
-            return new ResponseData(ExceptionMsg.SUCCESS,user);
+         paramMap.put("appid", "wxa02c207b24400c62");
+         paramMap.put("secret", "44cf2d74e8767448b22d3563fd38f864");
+         paramMap.put("code", openId);
+         String result = this.restTemplate.getForObject(url, String.class, paramMap);
+         JSONObject jsonObj  = (JSONObject) JSONObject.parse(result);
+         String open = (String) jsonObj.get("openid");
+         System.out.println(open);
+         if(accoutMapper.findByOpen(open)!=null){
+            if(accoutMapper.findByOpen(open).getUserType().equals("1")){
+               System.out.println(open);
+               int user = accoutMapper.findByOpen(open).getUserId();
+               return new ResponseData(ExceptionMsg.SUCCESS,user);
+            }
+            else{
+               return new ResponseData(ExceptionMsg.TYPEWRONG,"您不是用户");
+            }
          }
          else{
             return new ResponseData(ExceptionMsg.FAILED,"未找到openId");

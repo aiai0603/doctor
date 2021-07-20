@@ -6,7 +6,8 @@ public enum ExceptionMsg {
     DELETE("202", "删除成功"),
     FAILED("999","操作失败"),
     NOMORE("401","没有更多了"),
-    ISNULL("998","返回数据为空")
+    ISNULL("998","返回数据为空"),
+    TYPEWRONG("990","类型错误")
     ;
     private ExceptionMsg(String code, String msg) {
         this.code = code;

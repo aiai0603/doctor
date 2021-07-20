@@ -155,18 +155,27 @@ public class ConsultAskController {
      * @return
      */
     @GetMapping("showConsult")
-    public ResponseData findConsultByUser(@RequestParam(value = "userId",defaultValue = "")Integer user,@RequestParam(value = "start",defaultValue = "")Integer start,@RequestParam(value = "size",defaultValue = "10")Integer size,@RequestParam(value = "type",defaultValue = "")Integer type){
+    public ResponseData findConsultByUser(@RequestParam(value = "userId",defaultValue = "")Integer user,@RequestParam(value = "start",defaultValue = "")Integer start,@RequestParam(value = "size",defaultValue = "10")Integer size,@RequestParam(value = "type",defaultValue = "3")Integer type){
         if(user==null){
             return new ResponseData(ExceptionMsg.FAILED,"输入数据为空");
         }
         try {
            PageHelper.startPage(start,size,"create_time asc");
            //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-           List<ConsultAskEntity> list =   consultAskMapper.findByUser(user,type);
-            PageInfo<ConsultAskEntity> page =new PageInfo<>(list);
-            return new ResponseData(ExceptionMsg.SUCCESS,page);
+            if(type!=3){
+                List<ConsultAskEntity> list =   consultAskMapper.findByUser(user,type);
+                PageInfo<ConsultAskEntity> page =new PageInfo<>(list);
+                return new ResponseData(ExceptionMsg.SUCCESS,page);
+            }
+            else{
+                List<ConsultAskEntity> list =   consultAskMapper.findByUserOne(user);
+                PageInfo<ConsultAskEntity> page =new PageInfo<>(list);
+                return new ResponseData(ExceptionMsg.SUCCESS,page);
+            }
+
         }catch (Exception e){
-            return new ResponseData(ExceptionMsg.FAILED,"出现异常");
+            throw e;
+            //return new ResponseData(ExceptionMsg.FAILED,"出现异常");
         }
     }
 
