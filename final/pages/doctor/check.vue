@@ -144,6 +144,9 @@
 								success: (resu) => { // resu 可以获取当前屏幕的高度
 									that.swiperheight = (resu.windowHeight - res[0].top) +
 										'px';
+										
+									console.log(resu.windowHeight)
+									console.log(res[0].top)
 								},
 							})
 
