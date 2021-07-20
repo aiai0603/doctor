@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "配药记录",
+  "navigationBarBackgroundColor": "#0a88df",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-gap": "/uview-ui/components/u-gap/u-gap",
+    "u-avatar": "/uview-ui/components/u-avatar/u-avatar",
+    "u-button": "/uview-ui/components/u-button/u-button"
+  }
+}

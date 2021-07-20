@@ -133,11 +133,11 @@
 			},
 
 			login() {
-				/*uni.setStorageSync('doctorId', 1);
+				uni.setStorageSync('doctorId', 1);
 				uni.reLaunch({
-					url: '../index/index'
-				})*/
-				let that = this;
+					url: './doctor/doctorIndex'
+				})
+				/*let that = this;
 				if(that.type == 0) {
 					uni.login({
 						provider: 'weixin',
@@ -231,7 +231,7 @@
 							});
 						}
 					});
-				}
+				}*/
 				
 			}
 		}

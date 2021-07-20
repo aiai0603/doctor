@@ -20,7 +20,7 @@
 								</view>
 							</view>
 							<view class="mid">
-								<image src="../static/imgs/boy.png" class="avater"></image>
+								<image src="../../static/imgs/boy.png" class="avater"></image>
 								<view class="msg">
 									<view class="name">
 										{{item2.personName}} <text
@@ -31,7 +31,7 @@
 										药品需求：<text style="color: #000000;">{{item2.drugNames}}</text>
 									</view>
 								</view>
-								<image src="../static/imgs/go.png" mode="" class="go"></image>
+								<image src="../../static/imgs/go.png" mode="" class="go"></image>
 							</view>
 							<view class="down">
 								<view class="but">
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-	import { request, showToast } from "../api/request.js"
+	import { request, showToast } from "../../api/request.js"
 	export default {
 		data() {
 			return {
@@ -117,7 +117,7 @@
 			},
 			goto(e, id) {
 				uni.navigateTo({
-					url: "../person/person?id=" + id
+					url: "./person?id=" + id
 				})
 			},
 			changeIndex(index) {
@@ -213,11 +213,12 @@
 		border-bottom: #cccccc 1rpx solid;
 	}
 	.mid {
+		width: 100%;
 		height: 220rpx;
 		display: flex;
 		flex-flow: row;
 		align-items: center;
-		justify-content: center
+		justify-content: center;
 	}
 	.down {
 		border-top: #cccccc 1rpx solid;

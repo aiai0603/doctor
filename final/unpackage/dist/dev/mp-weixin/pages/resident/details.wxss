@@ -1,0 +1,80 @@
+
+.doctor {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	width: 100%;
+}
+.doctor>.doctor-info {
+	position: relative;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	height: 90%;
+	width: 95%;
+}
+.drug {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+}
+.title-item {
+	margin-left: 10rpx;
+	width: 10rpx;
+	height: 32rpx;
+	border-radius: 10px;
+	background: #21bd64;
+}
+ .u-form-item--left__content--required {
+	position: relative;
+	left: 0;
+	margin-left: 40rpx;
+}
+.infoForm {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	width: 100%;
+	height: 100%;
+}
+.form-item {
+	margin-left: 20rpx;
+}
+.tag {
+	margin-top: 10rpx;
+	margin-left: 15rpx; 
+	height: 45rpx;
+	width: 130rpx;
+}
+
+
+

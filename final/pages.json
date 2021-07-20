@@ -1,6 +1,6 @@
 {
 	"easycom": {
-		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [
 		{
@@ -116,6 +116,71 @@
             {
                 "navigationBarTitleText": "电子处方",
                 "navigationBarBackgroundColor":"#21bd64",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/cache",
+            "style" :                                                                                    
+            {
+				"navigationBarTitleText": "网上医生",
+				"enablePullDownRefresh": false,
+                "app-plus": {
+                	"titleNView": false
+                }
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/check",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "电子处方",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/med",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "新增药品",
+                "navigationBarBackgroundColor":"#098ade",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/method",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "药品设置",
+                "navigationBarBackgroundColor":"#098ade",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/person",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "患者详情",
+                "navigationBarBackgroundColor":"#098ade",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/prescription",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "处方",
+                "navigationBarBackgroundColor":"#098ade",
                 "navigationBarTextStyle":"white",
                 "enablePullDownRefresh": false
             }
