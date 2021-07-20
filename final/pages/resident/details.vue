@@ -4,13 +4,10 @@
 		<u-form :model="form" ref="uForm" label-width="200" :label-style="labelStyle">
 			<view class="doctor" :style="{ height: form.doctorId ? '200rpx': ''}">
 				<u-form-item label="诊断医生" prop="doctor" :required="true" :border-bottom="false" v-if="!form.doctor.name" style="width: 100%;">
-					<u-section 
-					    title="" 
-						sub-title="选择医生" 
-						:showLine="false"
-						slot="right"
-						style="margin-right: 30rpx;"
-						@click="chooseDoc()"></u-section>
+					<view style="color: #ccc; float: right; margin-right: 30rpx;">
+						选择医生
+						<u-icon name="arrow-right" @click="chooseDoc()"></u-icon>
+					</view>
 			    </u-form-item>
 				<view class="doctor-info" v-else>
 					<view style="display: flex; flex-direction: row; padding: 20rpx 0;">
@@ -33,11 +30,12 @@
 			<u-gap height="20" bg-color="#f2f2f2"></u-gap>
 			
 			<u-form-item label="问诊人" prop="patient" :required="true">
-				<view style="margin-right: 30rpx;" slot="right" v-if="!form.patientInfo.name" @click="showInfo = true;">
+				<view style="margin-right: 30rpx;" slot="right" v-show="!form.patientInfo.name" @click="showInfo = true;">
 					填写信息
 					<u-icon name="arrow-right"></u-icon>
 				</view>
-				<view v-else style="margin-right: 30rpx; color: #000;" slot="right" @click="showInfo = true;">{{ form.patientInfo.name }}&nbsp;{{ form.patientInfo.sex }}&nbsp;{{ form.patientInfo.age }}</view>
+		
+				<view v-show="form.patientInfo.name" style="margin-right: 30rpx; color: #000;" slot="right" @click="showInfo = true;">{{ form.patientInfo.name }}&nbsp;{{ form.patientInfo.sex }}&nbsp;{{ form.patientInfo.age }}</view>
 			</u-form-item>
 			<u-form-item label="确诊诊断" prop="diagnosis" :required="true">
 				<view style="margin-right: 30rpx;" slot="right" v-if="!form.diagnosis" @click="chooseDi()">
@@ -149,7 +147,7 @@
 						dept: ''
 					},
 					patientInfo: {
-						name: '',
+						name: null,
 						number: '',
 						sex: '',
 						age: '',
@@ -292,7 +290,7 @@
 						doctorId: this.form.doctor.id,
 						doctorName: this.form.doctor.name,
 						doctorLevelName: this.form.doctor.level,
-						createUserId: 1,
+						createUserId: uni.getStorageSync('userId'),
 						personName: this.form.patientInfo.name,
 						personCardType: '01',
 						personCardId: this.form.patientInfo.number,

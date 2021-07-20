@@ -41,7 +41,7 @@
 					<u-number-box v-model="form.quantity" :min="1" :max="100"></u-number-box>
 				</view>
 			</u-form-item>
-			<u-form-item label="" prop="intro" label-width="'auto'">
+			<u-form-item label="备注" prop="intro" label-width="'auto'">
 				<u-input type="textarea" v-model="form.remark" placeholder="请输入备注(选填)" class="input"
 					:customStyle="inputo" />
 			</u-form-item>

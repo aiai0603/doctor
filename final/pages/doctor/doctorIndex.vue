@@ -71,6 +71,13 @@
 			//swiper高度自适应
 			this.getElementHeight('.swiperss');
 		},
+		onShow: function() {
+			
+			if (wx.canIUse('hideHomeButton')) {
+			  wx.hideHomeButton()
+			}
+		
+		},
 		onLoad() {
 			if (uni.getStorageSync('doctorId') != undefined && uni.getStorageSync('doctorId') != '') {
 				this.getData();

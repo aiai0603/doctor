@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="main">
-			<u-search placeholder="搜索药品" v-model="keyword" shape="shape" bg-color="#f7f8fa" action-text="取消"
+			<u-search placeholder="搜索药品" v-model="keyword" shape="shape" bg-color="#f7f8fa" action-text="取消"  style="width: 100%;"
 				@custom="search()" @change="change()"></u-search>
 		</view>
 		<view class="result">
@@ -155,6 +155,7 @@
 		justify-content: center;
 		align-items: center;
 		background-color: white;
+		width: 100%;
 		padding: 25rpx 15rpx 15rpx;
 		box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	}

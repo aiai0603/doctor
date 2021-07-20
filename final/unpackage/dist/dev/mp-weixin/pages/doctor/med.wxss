@@ -28,7 +28,8 @@
 	padding: 5rpx;
 }
 .list {
-	box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	width: 100%;
 	background-color: white;
 }
@@ -51,8 +52,10 @@
 	-webkit-align-items: center;
 	        align-items: center;
 	background-color: white;
+	width: 100%;
 	padding: 25rpx 15rpx 15rpx;
-	box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
 }
 page {
 	background-color: #f1f5f6;

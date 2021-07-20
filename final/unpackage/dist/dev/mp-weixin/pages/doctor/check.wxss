@@ -1,6 +1,7 @@
 
 .tips {
-	box-shadow: #eeeeee 1rpx 8rpx 10rpx;
+	-webkit-box-shadow: #eeeeee 1rpx 8rpx 10rpx;
+	        box-shadow: #eeeeee 1rpx 8rpx 10rpx;
 	margin-top: 20rpx;
 	text-align: center;
 	color: #aaaaaa;
@@ -127,7 +128,8 @@
 	font-size: 32rpx;
 	border: 2rpx #000000 solid;
 	width: 140rpx;
-	box-shadow: ;
+	-webkit-box-shadow: ;
+	        box-shadow: ;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -145,7 +147,8 @@
 	-webkit-align-items: center;
 	        align-items: center;
 	padding: 10rpx 20rpx;
-	box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
 }
 .title {
 	line-height: 70rpx;

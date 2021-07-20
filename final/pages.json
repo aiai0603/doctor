@@ -4,24 +4,28 @@
 	},
 	"pages": [
 		{
+		    "path" : "pages/cache",
+		    "style" :                                                                                    
+		    {
+				"navigationBarTitleText": "网上医生",
+				"enablePullDownRefresh": false,
+		        "app-plus": {
+		        	"titleNView": false
+		        }
+		    }
+		    
+		},
+		{
 		    "path" : "pages/enter",
 		    "style" :                                                                                    
 		    {
-		        "app-plus": {
-					"titleNView": false
-				}
+		       "navigationBarTitleText": "网上医生",
+		       "navigationBarBackgroundColor":"#0a88df",
+		       "navigationBarTextStyle":"white",
+		       "enablePullDownRefresh": false
 		    } 
 		}
-        ,{
-            "path" : "test/test",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom" ,
-                "navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+       
         ,{
             "path" : "pages/login",
             "style" :                                                                                    
@@ -121,18 +125,7 @@
             }
             
         }
-        ,{
-            "path" : "pages/cache",
-            "style" :                                                                                    
-            {
-				"navigationBarTitleText": "网上医生",
-				"enablePullDownRefresh": false,
-                "app-plus": {
-                	"titleNView": false
-                }
-            }
-            
-        }
+       
         ,{
             "path" : "pages/doctor/check",
             "style" :                                                                                    

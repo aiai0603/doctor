@@ -107,7 +107,8 @@
 	height: 100rpx;
 	width: 100%;
 	background-color: white;
-	box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	-webkit-box-shadow: #cccccc 1rpx 1rpx 10rpx;
+	        box-shadow: #cccccc 1rpx 1rpx 10rpx;
 	position: fixed;
 	bottom: 0;
 	display: -webkit-box;

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<u-tabs-swiper :current="swiperCurrent" ref="uTabs" :list="list" :is-scroll="false" @change="changeIndex"
-			name="index" active-color="#21bd64" inactive-color="#aaaaaa" :bar-width="(720/list.length)" bar-height="10"
+			name="index" active-color="#21bd64" inactive-color="#aaaaaa" :bar-width="countl(list.length)" bar-height="10"
 			height="100" fontSize="32">
 		</u-tabs-swiper>
 		<swiper :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish"
@@ -104,7 +104,7 @@
 				cid: 0,
 				list: [],
 				swiperCurrent: 0,
-				swiperheight: 200,
+				swiperheight: 0,
 			}
 		},
 		onLoad(option) {
@@ -116,6 +116,10 @@
 			this.getElementHeight('.swiperss')
 		},
 		methods: {
+				
+			countl(l){
+				return 720/l
+			},
 			add0(m) {
 				return m < 10 ? '0' + m : m
 			},
@@ -152,7 +156,7 @@
 
 						}
 					})
-				}, 20)
+				}, 500)
 			},
 			changeIndex(index) {
 				this.swiperCurrent = index;

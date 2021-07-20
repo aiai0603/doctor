@@ -70,7 +70,7 @@
 			request({
 				url: '/consult/showConsult',
 				data: {
-					"userId": 1,
+					"userId": uni.getStorageSync('userId'),
 					"start": 0,
 					"size": 10000
 				}
