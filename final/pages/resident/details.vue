@@ -13,7 +13,7 @@
 						@click="chooseDoc()"></u-section>
 			    </u-form-item>
 				<view class="doctor-info" v-else>
-					<view style="display: flex; flex-direction: row;">
+					<view style="display: flex; flex-direction: row; padding: 20rpx 0;">
 						<u-avatar size="150" :src="form.doctor.avatar"></u-avatar>
 						<view style="margin-left: 20rpx; height: 120rpx;">
 							<view style="display: flex; margin-top: 10rpx; flex-direction: row;">
@@ -136,9 +136,6 @@
 				showInfo: false,
 				showSex: false,
 				showBirthday: false,
-				background: {
-					backgroundColor: '#0a88df',
-				},
 				labelStyle: {
 					fontSize: '30rpx',
 					marginLeft: '40rpx'
@@ -188,8 +185,8 @@
 				this.popupform.age = getAge(e.year, e.month, e.day) + '岁'
 			},
 			confirm () {
-				uni.navigateTo({
-					url: '../record/record'
+				uni.redirectTo({
+					url: './residentIndex'
 				})
 			},
 			saveInfo () {
@@ -234,17 +231,17 @@
 			},
 			addMedicine () {
 				uni.navigateTo({
-					url: '../medicine/medicine'
+					url: './medicineList'
 				})
 			},
 			chooseDoc () {
 				uni.navigateTo({
-					url: '../doctorList/doctorList'
+					url: './doctorList'
 				})
 			},
 			chooseDi () {
 				uni.navigateTo({
-					url: '../diagnosis/diagnosis'
+					url: './diagnosisList'
 				})
 			},
 			delTag (index) {

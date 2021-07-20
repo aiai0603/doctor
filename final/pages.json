@@ -12,70 +12,6 @@
 				}
 		    } 
 		}
-		,{
-		    "path": "pages/index/index",
-		    "style": {
-			    "navigationStyle": "custom" ,
-			    "navigationBarTextStyle": "white"
-		    }
-	    }    
-	   ,{
-            "path" : "pages/record/record",
-            "style" :                                                                                    
-            {
-				"navigationStyle": "custom" ,
-				"navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/details/details",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom" ,
-                "navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/medicine/medicine",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/doctorList/doctorList",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/diagnosis/diagnosis",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/recipel/recipel",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom" ,
-                "navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false
-            }
-            
-        }
         ,{
             "path" : "test/test",
             "style" :                                                                                    
@@ -169,6 +105,17 @@
             {
                 "navigationBarTitleText": "选择诊断",
                 "navigationBarBackgroundColor":"#0a88df",
+                "navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/resident/recipel",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "电子处方",
+                "navigationBarBackgroundColor":"#21bd64",
                 "navigationBarTextStyle":"white",
                 "enablePullDownRefresh": false
             }

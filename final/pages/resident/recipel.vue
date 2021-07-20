@@ -1,13 +1,5 @@
 <template>
 	<view>
-		<!--<u-navbar
-		    height="55"
-			title="电子处方"
-			title-color="#fff"
-			back-icon-color="#fff"
-			:background="background">
-		</u-navbar>-->
-		
 		<u-tabs-swiper :current="swiperCurrent" ref="uTabs" :list="list" :is-scroll="false" @change="changeIndex"
 			name="index" active-color="#21bd64" inactive-color="#aaaaaa" :bar-width="(720/list.length)" bar-height="10"
 			height="100" fontSize="32">
@@ -112,9 +104,6 @@
 				list: [],
 				swiperCurrent: 0,
 				swiperheight: 200,
-				background: {
-					backgroundColor: '#21bd64',
-				}
 			}
 		},
 		onLoad(option) {
@@ -194,7 +183,6 @@
 					url: '/prescription/showPrescription', //仅为示例，并非真实接口地址。
 					data: {
 						consult: this.cid,
-						type: 0
 					}
 				}).
 				then(res => {

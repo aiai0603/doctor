@@ -8,7 +8,7 @@
 					<view class="record-state">{{ recordList[index].consultStatus === 3 ? '已完成' : '未完成' }}</view>
 				</view>
 				<view class="record-detail">
-					<u-avatar size="100" :src="src"></u-avatar>
+					<u-avatar size="120" :src="src"></u-avatar>
 					<view class="record-detail-info">
 						<view style="display: flex; align-items: center; flex-direction: row;">
 							<span>{{ recordList[index].doctorName }}</span>
@@ -39,9 +39,6 @@
 				customStyle: {
 					color: '#039f49'
 				},
-				background: {
-					backgroundColor: '#0a88df',
-				},
 				recordList: [],
 				src: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F0a0cefbb9cb88fc9868a1da92cb11c390ebbb9323e81-O5tOvT_fw658&refer=http%3A%2F%2Fhbimg.b0.upaiyun.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1628823315&t=2af0af34d6304d4cad48c5c0e7027bcf'
 			}
@@ -65,7 +62,7 @@
 			},
 			choose (id) {
 				uni.navigateTo({
-					url: '../recipel/recipel?consultId=' + id
+					url: './recipel?consultId=' + id
 				})
 			}
 		},
@@ -73,12 +70,15 @@
 			request({
 				url: '/consult/showConsult',
 				data: {
-					"userId": 1
+					"userId": 1,
+					"start": 0,
+					"size": 10000
 				}
 			}).
 			then(res => {
 				if (res.data.rspCode == 200) {
-					this.recordList = res.data.data
+					console.log(res.data.data.list)
+					this.recordList = res.data.data.list
 				} else if (res.data.rspCode == 999) {
 					uni.showToast({
 						icon: 'none',
