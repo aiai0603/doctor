@@ -25,4 +25,7 @@ public interface ConsultAskMapper {
 
    @Select("SELECT * FROM consult_ask WHERE create_user_id = #{user} AND consult_status = #{type}")
     List<ConsultAskEntity> findByUser(@Param("user")Integer user,@Param("type") Integer type );
+
+    @Select("SELECT * FROM consult_ask WHERE create_user_id = #{user}")
+    List<ConsultAskEntity> findByUserOne(@Param("user")Integer user);
 }
