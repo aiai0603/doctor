@@ -105,23 +105,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     this.goeasy.connect({
       id: "001", //pubsub选填，im必填
       data: {
