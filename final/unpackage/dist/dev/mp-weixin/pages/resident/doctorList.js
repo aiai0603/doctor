@@ -219,10 +219,10 @@ var _request = __webpack_require__(/*! ../../api/request.js */ 65); //
 //
 //
 var _default = { data: function data() {return { pid: 0, sum: 0, keyword: '', list: [], swiperheight: 200, start: 1, size: 0 };}, onReady: function onReady() {//swiper高度自适应
-    this.getElementHeight('.swiperss');this.getData();}, methods: { choose: function choose(id) {var pages = getCurrentPages(); //获取所有页面栈实例列表
+    this.getElementHeight('.swiperss');this.getData();}, methods: { choose: function choose(id, index) {var pages = getCurrentPages(); //获取所有页面栈实例列表
       var nowPage = pages[pages.length - 1]; //当前页页面实例
       var prevPage = pages[pages.length - 2]; //上一页页面实例
-      prevPage.$vm.form.doctor.id = id;prevPage.$vm.form.doctor.avatar = this.list[id - 1].avatarUrl;prevPage.$vm.form.doctor.name = this.list[id - 1].doctorName;prevPage.$vm.form.doctor.level = this.list[id - 1].levelName;prevPage.$vm.form.doctor.dept = this.list[id - 1].deptName;uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
+      prevPage.$vm.form.doctor.id = id;prevPage.$vm.form.doctor.avatar = this.list[index].avatarUrl;prevPage.$vm.form.doctor.name = this.list[index].doctorName;prevPage.$vm.form.doctor.level = this.list[index].levelName;prevPage.$vm.form.doctor.dept = this.list[index].deptName;uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
         delta: 1 });}, search: function search() {this.keyword = '';},
     getData: function getData() {var _this = this;
       (0, _request.request)({

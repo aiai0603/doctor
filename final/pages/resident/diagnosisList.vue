@@ -9,7 +9,7 @@
 		</view>
 		<scroll-view scroll-y @scrolltolower="onreachBottom" :style="{height:swiperheight}" class="swiperss">
 			<view class="list">
-				<view class="list-item" v-for="(item,index) in list" @click="choose(item.diagnosisId)">
+				<view class="list-item" v-for="(item,index) in list" @click="choose(item.diagnosisId, index)">
 					{{ item.diseasesName }}
 				</view>
 			</view>
@@ -45,11 +45,11 @@
 			this.getData()
 		},
 		methods: {
-			choose(id) {
+			choose(id, index) {
 				let pages = getCurrentPages();  //获取所有页面栈实例列表
 				let nowPage = pages[ pages.length - 1];  //当前页页面实例
 				let prevPage = pages[ pages.length - 2 ];  //上一页页面实例
-				prevPage.$vm.form.diagnosis = this.list[id - 1].diseasesName; 
+				prevPage.$vm.form.diagnosis = this.list[index].diseasesName; 
 				uni.navigateBack({  //uni.navigateTo跳转的返回，默认1为返回上一级
 					delta: 1
 				});

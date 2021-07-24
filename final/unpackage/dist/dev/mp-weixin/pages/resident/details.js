@@ -395,7 +395,7 @@ var _request = __webpack_require__(/*! ../../api/request.js */ 65);function _cre
       this.popupform.age = (0, _age.getAge)(e.year, e.month, e.day) + '岁';
     },
     confirm: function confirm() {
-      uni.redirectTo({
+      uni.reLaunch({
         url: './residentIndex' });
 
     },

@@ -219,10 +219,10 @@ var _request = __webpack_require__(/*! ../../api/request.js */ 65); //
 //
 //
 var _default = { data: function data() {return { pid: 0, sum: 0, keyword: '', list: [], swiperheight: 200, start: 1, size: 0 };}, onReady: function onReady() {//swiper高度自适应
-    this.getElementHeight('.swiperss');this.getData();}, methods: { choose: function choose(id) {var pages = getCurrentPages(); //获取所有页面栈实例列表
+    this.getElementHeight('.swiperss');this.getData();}, methods: { choose: function choose(id, index) {var pages = getCurrentPages(); //获取所有页面栈实例列表
       var nowPage = pages[pages.length - 1]; //当前页页面实例
       var prevPage = pages[pages.length - 2]; //上一页页面实例
-      if (prevPage.$vm.form.drugList.indexOf(this.list[id - 1].drugName) == -1) {prevPage.$vm.form.drugList.push({ drugId: id, drugName: this.list[id - 1].drugName });}uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
+      if (prevPage.$vm.form.drugList.indexOf(this.list[index].drugName) == -1) {prevPage.$vm.form.drugList.push({ drugId: id, drugName: this.list[index].drugName });}uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
         delta: 1 });}, search: function search() {this.keyword = '';}, getData: function getData() {var _this = this;(0, _request.request)({
         url: '/drug/queryAll', //仅为示例，并非真实接口地址。
         data: {

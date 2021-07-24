@@ -170,7 +170,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-    } else if (uni.getStorageSync('userId') != undefined && uni.getStorageSync('userID') != '') {
+    } else if (uni.getStorageSync('userId') != undefined && uni.getStorageSync('userId') != '') {
       uni.reLaunch({
         url: 'pages/resident/residentIndex' });
 

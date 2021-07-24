@@ -190,7 +190,7 @@
 				this.popupform.age = getAge(e.year, e.month, e.day) + '岁'
 			},
 			confirm () {
-				uni.redirectTo({
+				uni.reLaunch({
 					url: './residentIndex'
 				})
 			},

@@ -73,7 +73,7 @@
 
 				})
 
-			} else if (uni.getStorageSync('userId') != undefined && uni.getStorageSync('userID') != '') {
+			} else if (uni.getStorageSync('userId') != undefined && uni.getStorageSync('userId') != '') {
 				uni.reLaunch({
 					url: 'pages/resident/residentIndex',
 

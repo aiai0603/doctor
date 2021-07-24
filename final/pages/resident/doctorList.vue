@@ -9,7 +9,7 @@
 		</view>
 		<scroll-view scroll-y @scrolltolower="onreachBottom" :style="{height:swiperheight}" class="swiperss">
 			<view class="list">
-				<view class="list-item" v-for="(item,index) in list" @click="choose(item.doctorId)">
+				<view class="list-item" v-for="(item,index) in list" @click="choose(item.doctorId, index)">
 					<u-avatar :src="item.avatarUrl" size="150"></u-avatar>
 					<view>
 						<view style="display: flex; margin-top: 10rpx; flex-direction: row;">
@@ -47,15 +47,15 @@
 			this.getData()
 		},
 		methods: {
-			choose(id) {
+			choose(id, index) {
 				let pages = getCurrentPages();  //获取所有页面栈实例列表
 				let nowPage = pages[ pages.length - 1];  //当前页页面实例
 				let prevPage = pages[ pages.length - 2 ];  //上一页页面实例
 				prevPage.$vm.form.doctor.id = id;
-			    prevPage.$vm.form.doctor.avatar = this.list[id - 1].avatarUrl;
-				prevPage.$vm.form.doctor.name = this.list[id - 1].doctorName;
-				prevPage.$vm.form.doctor.level = this.list[id - 1].levelName;
-				prevPage.$vm.form.doctor.dept = this.list[id - 1].deptName;
+			    prevPage.$vm.form.doctor.avatar = this.list[index].avatarUrl;
+				prevPage.$vm.form.doctor.name = this.list[index].doctorName;
+				prevPage.$vm.form.doctor.level = this.list[index].levelName;
+				prevPage.$vm.form.doctor.dept = this.list[index].deptName;
 				uni.navigateBack({  //uni.navigateTo跳转的返回，默认1为返回上一级
 					delta: 1
 				});
