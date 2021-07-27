@@ -1,28 +1,29 @@
 {
-  "pages": [
-    "pages/cache",
-    "pages/enter",
-    "pages/login",
-    "pages/doctor/doctorIndex",
-    "pages/resident/residentIndex",
-    "pages/resident/details",
-    "pages/resident/record",
-    "pages/resident/medicineList",
-    "pages/resident/doctorList",
-    "pages/resident/diagnosisList",
-    "pages/resident/recipel",
-    "pages/doctor/check",
-    "pages/doctor/med",
-    "pages/doctor/method",
-    "pages/doctor/person",
-    "pages/doctor/prescription"
-  ],
-  "subPackages": [],
-  "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
-  },
-  "usingComponents": {}
+    "pages": [
+        "pages/cache",
+        "pages/enter",
+        "pages/login",
+        "pages/doctor/doctorIndex",
+        "pages/resident/residentIndex",
+        "pages/resident/details",
+        "pages/resident/record",
+        "pages/resident/medicineList",
+        "pages/resident/doctorList",
+        "pages/resident/diagnosisList",
+        "pages/resident/recipel",
+        "pages/doctor/check",
+        "pages/doctor/med",
+        "pages/doctor/method",
+        "pages/doctor/person",
+        "pages/doctor/prescription"
+    ],
+    "subPackages": [],
+    "window": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "uni-app",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8"
+    },
+    "usingComponents": {},
+    "sitemapLocation": "sitemap.json"
 }
